@@ -1,0 +1,8 @@
+		<!-- Copy and paste this into your app/config/global_filters.xml -->
+		<filter name="AgaviDebugToolbarFilter" class="AgaviDebugToolbarFilter">
+			<parameter name="output_types">
+				<parameter>html</parameter>
+				<parameter>html2</parameter>
+			</parameter>
+			<parameter name="modpub">/modpub/AgaviDebugToolbar</parameter>
+		</filter>
