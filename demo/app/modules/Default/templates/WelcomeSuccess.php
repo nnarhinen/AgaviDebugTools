@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<base href="<?php echo $this->getContext()->getRouting()->getBaseHref(); ?>">
+	<base href="<?php echo $this->getContext()->getRouting()->getBaseHref(); ?>" />
 	<title>Welcome to Agavi!</title>
 	<style type="text/css">
 html {
@@ -26,15 +26,6 @@ body {
 
 a, a:link, a:visited, a:active, a:hover {
 	color: #AAF;
-}
-
-div {
-	margin-top: 50px;
-	padding-top: 340px;
-	background-image: url('plant.png');
-	background-position: center top;
-	background-repeat: no-repeat;
-	text-align: center;
 }
 
 h1 {

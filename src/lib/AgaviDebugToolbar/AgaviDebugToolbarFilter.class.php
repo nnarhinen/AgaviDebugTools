@@ -28,30 +28,31 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
      return;
     }
     
-    /**
-     * Adding JS
-     */
-    # Mootools
-    $mootoolsJs = '<script type="text/javascript" src="'.$this->getParameter('modpub').'/js/mootools-1.2.js'.'"></script>';
-    $adtJs      = '<script type="text/javascript" src="'.$this->getParameter('modpub').'/js/AgaviDebugToolbar.js"></script>';
-    $newContent = str_replace('</head>', $mootoolsJs."\n".$adtJs."\n</head>", $container->getResponse()->getContent() );
+    //stuff all data into this array
+    $template = array();
     
-    # Load AgaviDebugToolbar template
-    //TODO: handle relative and absolute paths
-    $adtTemplate = file_get_contents(dirname(__FILE__) .'/'. $this->getParameter('template') );
+    $template['routes'] = $this->getMatchedRoutes();
     
     # Load routing block
-    $adtTemplate = str_replace('{adtBlock_Routing}', $this->adtGetMatchedRoutesHtml(), $adtTemplate);
-    
-    # Load request parameters block
-    $adtTemplate = str_replace('{adtBlock_Request}', $this->adtGetRequestHtml(), $adtTemplate);
-    
-    # Load view block
-    $adtTemplate = str_replace('{adtBlock_View}', $this->adtGetViewHtml(), $adtTemplate);
-    
-    # Add AgaviDebugToolbar to response
-    $newContent  = str_replace('</body>', $adtTemplate."\n</body>", $newContent);
-    $container->getResponse()->setContent( $newContent );
+//    $adtTemplate = str_replace('{adtBlock_Routing}', $this->adtGetMatchedRoutesHtml(), $adtTemplate);
+//    
+//    # Load request parameters block
+//    $adtTemplate = str_replace('{adtBlock_Request}', $this->adtGetRequestHtml(), $adtTemplate);
+//    
+//    # Load view block
+//    $adtTemplate = str_replace('{adtBlock_View}', $this->adtGetViewHtml(), $adtTemplate);
+
+    // load the template
+    // TODO: handle relative and absolute paths
+    ob_start();
+    include(dirname(__FILE__) .'/'. $this->getParameter('template') );
+    $output = ob_get_contents();
+    ob_end_clean();
+
+    // Inject AgaviDebugToolbar to response
+    // TODO: How to handle other output types?
+    $output  = str_replace('</body>', $output."\n</body>", $container->getResponse()->getContent());
+    $container->getResponse()->setContent($output);
     
     #echo '<pre>';
     #var_dump( $this->getContext()->getRouting()->getRoute('dupa') );
@@ -64,7 +65,7 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
    * @return array
    * @since 0.1
    */
-  private function adtGetMatchedRoutes() {
+  private function getMatchedRoutes() {
     # Array with information about matched routes, name of route is an index of array
     $matchedRoutesInformation = array();
     # Matched routes

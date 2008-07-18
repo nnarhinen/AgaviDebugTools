@@ -10,7 +10,7 @@ window.addEvent("domready", function(){
 
   /**
    * Display blocks
-   * /
+   */
   $each( $$("a[id^=adtMenu_]"), function(el){
     el.addEvent("click", function(event){
       event.stop();
@@ -28,7 +28,7 @@ window.addEvent("domready", function(){
   /**
    * Events: Routing
    *
-   * /
+   */
   // Show details about matched route
   $each( $$("a[id^=adtMatchedRouteShow_]"), function(el){
     el.addEvent("click", function(event){
@@ -61,7 +61,7 @@ window.addEvent("domready", function(){
   
   /**
    * Events: View
-   * /
+   */
    // Show details about output type
    $each( $$("a[id^=adtViewOutputTypeGet_]"), function(el){
     el.addEvent("click", function(event){
@@ -76,7 +76,5 @@ window.addEvent("domready", function(){
       }
     });
    });
-   
-   */
   
 });

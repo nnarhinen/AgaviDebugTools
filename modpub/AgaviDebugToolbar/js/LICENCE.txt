@@ -1,0 +1,1 @@
+mootools and SimpleTabs are 3rd party libs, their licences must be included.
