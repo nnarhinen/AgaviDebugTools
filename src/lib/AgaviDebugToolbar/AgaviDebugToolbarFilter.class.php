@@ -1,6 +1,6 @@
 <?php
 /**
- * Filter for displaying couple of information :)
+ * Filter for displaying couple of informations :)
  * 
  * @author    Daniel Ancuta <daniel.ancuta@whisnet.pl>
  * @copyright Authors
@@ -16,8 +16,8 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
     # We're checking if we can add AgaviDebugToolbar to response
     # If output type is one of our defined output types
     if ( !$container->getResponse()->isContentMutable() || 
-        (is_array($this->getParameter('output_types')) && 
-         !in_array($container->getResponse()->getOutputType()->getName(), $this->getParameter('output_types')) ) ) {
+       (is_array($this->getParameter('output_types'))   && 
+       !in_array($container->getResponse()->getOutputType()->getName(), $this->getParameter('output_types')) ) ) {
      return;
     }
     
