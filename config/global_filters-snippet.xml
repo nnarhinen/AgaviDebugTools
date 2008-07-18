@@ -1,8 +1,15 @@
-		<!-- Copy and paste this into your app/config/global_filters.xml -->
-		<filter name="AgaviDebugToolbarFilter" class="AgaviDebugToolbarFilter">
-			<parameter name="output_types">
-				<parameter>html</parameter>
-				<parameter>html2</parameter>
-			</parameter>
-			<parameter name="modpub">/modpub/AgaviDebugToolbar</parameter>
-		</filter>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<filters>
+<!-- 
+	Copy and paste this into your app/config/global_filters.xml
+	or use XInclude (like the demo app)
+-->
+	<filter name="AgaviDebugToolbarFilter" class="AgaviDebugToolbarFilter">
+		<parameter name="output_types">
+			<parameter>html</parameter>
+			<parameter>html2</parameter>
+		</parameter>
+		<parameter name="modpub">/modpub/AgaviDebugToolbar</parameter>
+		<parameter name="template">templates/html.php</parameter>
+	</filter>
+</filters>

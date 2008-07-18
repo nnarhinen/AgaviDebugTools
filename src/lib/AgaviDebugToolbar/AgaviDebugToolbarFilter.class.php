@@ -37,7 +37,8 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
     $newContent = str_replace('</head>', $mootoolsJs."\n".$adtJs."\n</head>", $container->getResponse()->getContent() );
     
     # Load AgaviDebugToolbar template
-    $adtTemplate = file_get_contents( AgaviConfig::get('core.lib_dir').'/AgaviDebugToolbar/html/template.php' );
+    //TODO: handle relative and absolute paths
+    $adtTemplate = file_get_contents(dirname(__FILE__) .'/'. $this->getParameter('template') );
     
     # Load routing block
     $adtTemplate = str_replace('{adtBlock_Routing}', $this->adtGetMatchedRoutesHtml(), $adtTemplate);

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurations xmlns="http://agavi.org/agavi/1.0/config" xmlns:xi="http://www.w3.org/2001/XInclude" >
+
+	<configuration>
+		<filters>
+
+			<filter name="FormPopulationFilter" class="AgaviFormPopulationFilter">
+				<parameter name="methods">
+					<parameter>write</parameter>
+				</parameter>
+			</filter>
+
+			<!-- this is why I (v-dogg) love XML configs  -->
+			<xi:include href="../../../config/global_filters-snippet.xml#xpointer(/filters/*)" />
+			
+		</filters>
+
+	</configuration>
+
+</configurations>

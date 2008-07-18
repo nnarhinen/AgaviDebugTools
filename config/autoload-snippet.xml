@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<autoloads>
+<!-- 
+	Copy and paste this into your app/config/autoload.xml (you need to adjust the path)
+	or use XInclude (like the demo app)
+-->	
+	<autoload name="AgaviDebugToolbarFilter">%core.app_dir%/../../src/lib/AgaviDebugToolbar/AgaviDebugToolbarFilter.class.php</autoload>
+</autoloads>

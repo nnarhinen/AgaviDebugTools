@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurations xmlns="http://agavi.org/agavi/1.0/config">
+	<configuration>
+		
+		<autoload name="AdtDemoDefaultBaseAction">%core.module_dir%/Default/lib/action/AdtDemoDefaultBaseAction.class.php</autoload>
+		<autoload name="AdtDemoDefaultBaseModel">%core.module_dir%/Default/lib/model/AdtDemoDefaultBaseModel.class.php</autoload>
+		<autoload name="AdtDemoDefaultBaseView">%core.module_dir%/Default/lib/view/AdtDemoDefaultBaseView.class.php</autoload>
+		
+	</configuration>
+</configurations>
