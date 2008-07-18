@@ -8,35 +8,6 @@
  */
 class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter, AgaviIActionFilter
 {
-<<<<<<< .mine
-=======
-  public function execute(AgaviFilterChain $filterChain, AgaviExecutionContainer $container) {
-    $this->container = $container;
-    
-    $filterChain->execute($container);
-    
-    # We're checking if we can add AgaviDebugToolbar to response
-    # If output type is one of our defined output types
-    if ( !$container->getResponse()->isContentMutable() || 
-       (is_array($this->getParameter('output_types'))   && 
-       !in_array($container->getResponse()->getOutputType()->getName(), $this->getParameter('output_types')) ) ) {
-     return;
-    }
-    
-    //stuff all data into this array
-    $template = array();
-    
-    $template['routes'] = $this->getMatchedRoutes();
-    
-    # Load routing block
-//    $adtTemplate = str_replace('{adtBlock_Routing}', $this->adtGetMatchedRoutesHtml(), $adtTemplate);
-//    
-//    # Load request parameters block
-//    $adtTemplate = str_replace('{adtBlock_Request}', $this->adtGetRequestHtml(), $adtTemplate);
-//    
-//    # Load view block
-//    $adtTemplate = str_replace('{adtBlock_View}', $this->adtGetViewHtml(), $adtTemplate);
->>>>>>> .r14
 
 	/**
 	 * @var AgaviExecutionContainer
@@ -75,9 +46,9 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
 		// Inject AgaviDebugToolbar to response
 		// TODO: How to handle other output types?
 		//  - should we abstract the whole rendering part and have specialized renderers?
-		
+
 		$output  = str_replace('</body>', $output."\n</body>", $container->getResponse()->getContent());
-		
+
 		// ...now this is just stupid. I hate myself for this:
 		$cssOutput = '';
 		foreach($this->getParameter('css', array()) as $css) {
