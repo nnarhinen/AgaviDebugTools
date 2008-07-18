@@ -3,14 +3,8 @@
  * Filter for displaying couple of information :)
  * 
  * @author    Daniel Ancuta <daniel.ancuta@whisnet.pl>
- * @copyright Author
+ * @copyright Authors
  * @version   0.1
- * 
- * @todo 
- *  Get information about callback class(?)
- *  Get information about output_type
- *  Add JavaScript using DOM, not str_replace
- *  Add CSS using DOM, not str_replace
  */
 class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter, AgaviIActionFilter 
 {
