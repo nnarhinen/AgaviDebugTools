@@ -85,6 +85,11 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
    * @since 0.1
    */
   protected function adtGetMatchedRoutesHtml() {
+  	
+  	throw new Exception('do not use this function, kthx bai');
+  	/*
+  	 * not needed, templates are used from now on
+  	 
     $matchedRoutesTemplate = '';
     
     foreach( $this->adtGetMatchedRoutes() as $matchedRouteName => $matchedRouteInfo ) {
@@ -174,7 +179,7 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
              $matchedRoutesTemplate .= '</ul>';
            } else {
             $matchedRoutesTemplate .= 'No parameters';
-           }*/
+           }* /
            
            # Ignores
            $matchedRoutesTemplate .= 'Ignores: ';
@@ -227,6 +232,8 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
     }
     
     return $matchedRoutesTemplate;
+    */
+    
   }
   
   /**
