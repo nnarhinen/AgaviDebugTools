@@ -1,3 +1,12 @@
+<?php
+//define some helper methods
+
+function _s($string) {
+	return htmlspecialchars($string);
+}
+
+?>
+
 <div id="adt-container">
 
 <!-- this cannot be here -->
@@ -51,140 +60,104 @@
 	<h1>Agavi Debug Log</h1>
 
 	<div id="sections">
-		<h2>Routing</h2>
-		<div id="section-routing" >
-	    <?php foreach($template['routes'] as $matchedRouteName => $matchedRouteInfo ): ?>
-			<h3 id="adtMatchedRouteShow_<?php echo md5($matchedRouteName); ?>" ><strong><?php echo $matchedRouteName ?></strong></h3>
-			<div id="adtMatchedRouteInfo_<?php echo md5($matchedRouteName) ?>" >
-				<strong>Module</strong>: <?php echo $matchedRouteInfo['opt']['module']; ?><br />
-				<strong>Action</strong>: <?php echo $matchedRouteInfo['opt']['action']; ?><br />
-				<strong>Stop</strong>: <?php echo $matchedRouteInfo['opt']['stop']==true ? 'True' : 'False'; ?><br />
-				<strong>Parameters</strong>: 
+		<h2>Matched Routes</h2>
+		<div id="section-routing">
+	    <?php foreach($template['routes'] as $routeName => $routeInfo): ?>
+			<h3><?php echo $routeName ?></h3>
+			<div id="route-<?php echo md5($routeName); ?>">
+				<dl>
+					<dt>Module</dt>
+						<dd><?php echo $routeInfo['opt']['module']; ?></dd>
+					<dt>Action</dt>
+						<dd><?php echo $routeInfo['opt']['action']; ?></dd>
+					<dt>Stop</dt>
+						<dd><?php echo $routeInfo['opt']['stop']==true ? 'True' : 'False'; ?></dd>
+					<dt>Parameters</dt>
+					<dd> 
+						<?php if(count($routeInfo['par'])): ?>
+						<ul>
+						<?php foreach( $routeInfo['par'] as $oneParameter ): ?>
+							<li><strong><?php echo $oneParameter ?></strong><br />
+							Default 
+							<?php if ( isset($routeInfo['opt']['defaults'][$oneParameter]) ): ?>
+							<ul>
+								<li>Pre: <?php echo $routeInfo['opt']['defaults'][$oneParameter]['pre']; ?></li>
+								<li>Value: <?php echo $routeInfo['opt']['defaults'][$oneParameter]['val']; ?></li>
+								<li>Post: <?php echo $routeInfo['opt']['defaults'][$oneParameter]['post']; ?></li>
+							</ul>
+			                <?php else: ?>
+							No default
+			                <?php endif; ?>
+							Required: <?php echo !isset($routeInfo['opt']['optional_parameters'][$oneParameter]) ? 'False' : 'True'; ?>
+							</li>
+						<?php endforeach; ?>
+						</ul>
+						<?php else: ?>
+						No Parameters
+						<?php endif; ?>
+					</dd>
+				</dl>
+				<strong>Output type</strong>:
+				<?php
+					$otName = empty($routeInfo['opt']['output_type']) ? $this->getContext()->getController()->getOutputType()->getName() : $routeInfo['opt']['output_type']; 
+					$outputType = $this->getContext()->getController()->getOutputType($otName); 
+				?>
+				<?php echo $otName;  ?>
+
+				<div>
+					Has renderers:  <?php echo $outputType->hasRenderers()==true ? 'True' : 'False'; ?><br />
+					Default layout name: <?php echo $outputType->getDefaultLayoutName(); ?>
+				</div>
+				<?php 
+				if ( strcmp($this->getContext()->getController()->getOutputType()->getName(), $routeInfo['opt']['output_type']) == 0 ) {
+					echo ' ( default ) ';
+				}
+				?>
+				<br />
+
+				<strong>Parameters</strong>:
+				<?php if ( count( $routeInfo['opt']['parameters'] ) != 0 ): ?>
 				<ul>
-				<?php foreach( $matchedRouteInfo['par'] as $oneParameter ): ?>
-					<li><strong><?php echo $oneParameter ?></strong><br />
-					Default <br />
-					<?php if ( isset($matchedRouteInfo['opt']['defaults'][$oneParameter]) ): ?>
-					<!-- 
-					<ul>
-	                    $matchedRoutesTemplate .= 'Pre: '.$matchedRouteInfo['opt']['defaults'][$oneParameter]['pre'];
-	                    $matchedRoutesTemplate .= '<br />';
-	                    $matchedRoutesTemplate .= 'Value: '.$matchedRouteInfo['opt']['defaults'][$oneParameter]['val'];
-	                    $matchedRoutesTemplate .= '<br />';
-	                   $matchedRoutesTemplate .= 'Post: '.$matchedRouteInfo['opt']['defaults'][$oneParameter]['post'];
-	                  $matchedRoutesTemplate .= '</ul>';
-	                } else {
-	                  $matchedRoutesTemplate .= ' No default ';
-	                }
-	                 -->
-	                 <!-- 
-	                $matchedRoutesTemplate .= 'Required: ';
-	
-	                if ( !isset($matchedRouteInfo['opt']['optional_parameters'][$oneParameter]) ) {
-	                  $matchedRoutesTemplate .= 'False';
-	                } else {
-	                  $matchedRoutesTemplate .= 'True';
-	                }
-	                
-	               $matchedRoutesTemplate .= '</li>';
-	           }
-	           $matchedRoutesTemplate .= '
-	           -->
-					<?php endif; ?>
+				<?php foreach( $routeInfo['opt']['parameters'] as $parameter ): ?>
+					<li><?php echo $parameter; ?></li>
 				<?php endforeach; ?>
-	           </ul>
-	           <!-- 
-		<?php endforeach; ?>
-	           
-	           # Output type for router
-	           $matchedRoutesTemplate .= '<strong>Output type</strong>: ';
-	           if ( empty( $matchedRouteInfo['opt']['output_type'] ) ) {
-	             $tmpOutputTypeName = $this->getContext()->getController()->getOutputType()->getName();
-	           } else {
-	             $tmpOutputTypeName = $matchedRouteInfo['opt']['output_type'];
-	           }
-	           $matchedRoutesTemplate .= '<a id="adtMatchedRouteOutputTypeShow_'.md5($matchedRouteName).'" href="#">'.$tmpOutputTypeName.'</a>';
-	           
-	           # Output type info
-	           $routeOutputType = $this->getContext()->getController()->getOutputType($tmpOutputTypeName);
-	           
-	           $matchedRoutesTemplate .= '<div id="adtMatchedRouteOutputTypeInfo_'.md5($matchedRouteName).'" style="display: none;">';
-	             $matchedRoutesTemplate .= 'Has renderers: ';
-	             $matchedRoutesTemplate .= $routeOutputType->hasRenderers()==true?'True':'False';
-	             $matchedRoutesTemplate .= '<br />';
-	             $matchedRoutesTemplate .= 'Default layout name: '.$routeOutputType->getDefaultLayoutName();
-	           $matchedRoutesTemplate .= '</div>';
-	           
-	           if ( strcmp($this->getContext()->getController()->getOutputType()->getName(), $matchedRouteInfo['opt']['output_type']) == 0 ) {
-	             $matchedRoutesTemplate .= ' ( default ) ';
-	           }
-	
-	           $matchedRoutesTemplate .= '<br />';
-	           
-	           /*
-	           $matchedRoutesTemplate .= '<strong>Parameters</strong>: ';
-	           
-	           if ( count( $matchedRouteInfo['opt']['parameters'] ) != 0 ) {
-	             $matchedRoutesTemplate .= '<ul>';
-	             
-	             foreach( $matchedRouteInfo['opt']['parameters'] as $parameter ) {
-	              $matchedRoutesTemplate .= '<li>'.$parameter.'</li>';
-	             }
-	             $matchedRoutesTemplate .= '</ul>';
-	           } else {
-	            $matchedRoutesTemplate .= 'No parameters';
-	           }*/
-	           
-	           # Ignores
-	           $matchedRoutesTemplate .= 'Ignores: ';
-	           if ( count( $matchedRouteInfo['opt']['ignores'] ) != 0 ) {
-	             $matchedRoutesTemplate .= '<ul>';
-	             foreach( $matchedRouteInfo['opt']['ignores'] as $ignore ) {
-	               $matchedRoutesTemplate .= '<li>'.$ignore.'</li>';
-	             }
-	             $matchedRoutesTemplate .= '</ul>';
-	           } else {
-	             $matchedRoutesTemplate .= 'No ignores';
-	           }
-	           
-	           $matchedRoutesTemplate .= '<br />';
-	           
-	           # Childs of route
-	           $matchedRoutesTemplate .= 'Childs';
-	           if ( count($matchedRouteInfo['opt']['childs']) != null ) {
-	             $matchedRoutesTemplate .= '<ul>';
-	             foreach( $matchedRouteInfo['opt']['childs'] as $children ) {
-	               $matchedRoutesTemplate .= '<li>'.$children.'</li>';
-	             }
-	             $matchedRoutesTemplate .= '</ul>';
-	           }
-	           
-	           $matchedRoutesTemplate .= '<br />';
-	           
-	           # Callback class
-	           $matchedRoutesTemplate .= 'Callback: '.$matchedRouteInfo['opt']['callback'];
-	           
-	           $matchedRoutesTemplate .= '<br />';
-	           
-	           # Imply
-	           $matchedRoutesTemplate .= 'Imply: ';
-	           $matchedRoutesTemplate .= $matchedRouteInfo['opt']['imply']==true?'True':'False';
-	           
-	           $matchedRoutesTemplate .= '<br />';
-	           
-	           # Cut
-	           $matchedRoutesTemplate .= 'Cut: ';
-	           $matchedRoutesTemplate .= $matchedRouteInfo['opt']['cut']==true?'True':'False';
-	           
-	           $matchedRoutesTemplate .= '<br />';
-	           
-	           # RPX
-	           $matchedRoutesTemplate .= 'rpx: '.$matchedRouteInfo['rxp'];
-	         
-	       $matchedRoutesTemplate .= '</div>';
-	       $matchedRoutesTemplate .= '<br />';
-	            -->
-		</div>
+				</ul>
+				<?php else: ?>
+					No parameters
+				<?php endif; ?>
+
+				<br/>Ignores:
+				<?php if ( count( $routeInfo['opt']['ignores'] ) != 0 ): ?>
+				<ul>
+				<?php foreach( $routeInfo['opt']['ignores'] as $ignore ): ?>
+					<li><?php echo $ignore; ?></li>
+				<?php endforeach; ?>
+				</ul>
+				<?php else: ?> 
+					No ignores
+				<?php endif; ?>
+				<br />
+
+				Children
+				<?php if (count($routeInfo['opt']['childs']) != null ): ?>
+					<ul>
+					<?php foreach( $routeInfo['opt']['childs'] as $children ): ?>
+						<li>'.$children.'</li>
+					<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
+				<br />
+
+				Callback: <?php echo $routeInfo['opt']['callback']; ?>
+				<br />
+				Imply: <?php echo $routeInfo['opt']['imply']==true?'True':'False'; ?>
+				<br />
+				Cut: <?php echo $routeInfo['opt']['cut']==true?'True':'False'; ?>
+				<br />
+				rpx: <?php echo _s($routeInfo['rxp']); ?>	         
+		
+			</div><!-- route -->
+		<?php endforeach; //routes ?> 
 		</div><!-- routing -->
 
 		<h2>Request</h2>

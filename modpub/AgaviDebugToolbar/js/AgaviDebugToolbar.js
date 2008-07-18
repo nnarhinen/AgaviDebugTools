@@ -3,7 +3,7 @@
  */
 
 window.addEvent("domready", function(){
-
+	
 	var tabs = new SimpleTabs('sections', {
 		selector: 'h2'
 	});
