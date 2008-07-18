@@ -16,6 +16,7 @@ class Default_IndexAction extends AdtDemoDefaultBaseAction
 	 */
 	public function getDefaultViewName()
 	{
+		$this->context->getLoggerManager()->log('Look Ma! Me debugging '.__CLASS__, 'debug');
 		return 'Success';
 	}
 }

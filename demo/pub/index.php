@@ -16,6 +16,7 @@ require('../app/config.php');
 // | In debug mode among other things the cache is cleaned on every request.   |
 // +---------------------------------------------------------------------------+
 Agavi::bootstrap('development');
+//Agavi::bootstrap('production');
 
 // +---------------------------------------------------------------------------+
 // | Call the controller's dispatch method on the default context              |

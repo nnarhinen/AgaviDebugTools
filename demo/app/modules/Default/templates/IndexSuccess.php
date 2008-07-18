@@ -5,20 +5,10 @@
 	<base href="<?php echo $this->getContext()->getRouting()->getBaseHref(); ?>" />
 	<title>Welcome to Agavi!</title>
 	<style type="text/css">
-html {
-	margin: 0;
-	padding: 0;
-}
 
 body {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	background-color: #FFF;
-	background-image: url('bg.png');
-	background-position: left top;
-	background-repeat: repeat-x;
+	margin: 1em;
+	background: #fff;
 	font-family: 'Trebuchet MS', Verdana, Tahoma, Arial, Helvetica, sans-serif;
 	font-size: 9pt;
 	color: #999;
@@ -44,15 +34,12 @@ p.light a, p.light a:link, p.light a:visited, p.light a:active, p.light a:hover 
 </head>
 <body>
 	<div>
-		<h1>Welcome to Agavi!</h1>
-		<p>You successfully created your first project! Awesome!</p>
-		<p>&nbsp;</p>
-		<p>To get started, refer to the Agavi manual, or play around with the sample application that was included with this distribution.</p>
-		<p>If you have any questions, join us in <b>#agavi</b> on <b>irc.freenode.net</b> or consult the "users" mailing list.</p>
-		<p>&nbsp;</p>
-		<p><em>This page will appear until you remove the corresponding rule from the <code>routing.xml</code> configuration file.</em></p>
-		<p>&nbsp;</p>
-		<p><a href="http://www.agavi.org/">Agavi Homepage</a> &middot; <a href="http://lists.agavi.org/mailman/listinfo">Mailing Lists</a></p>
+		<h1>Debug Toolbar Sample</h1>
+		<ul>
+			<li><a href="/">Plain page</a></li>
+			<li><a href="<?php echo $ro->gen(null, array('locale' => 'en')); ?>">+ Locale</a></li>
+			<li><a href="<?php echo $ro->gen(null, array('locale' => 'en', 'foo'=>'bar', 'arr[1]'=>'value1', 'arr[2]'=>'value2')); ?>">+ Parameters</a></li>
+		</ul>
 	</div>
 </body>
 </html>

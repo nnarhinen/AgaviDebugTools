@@ -5,4 +5,5 @@
 	or use XInclude (like the demo app)
 -->	
 	<autoload name="AgaviDebugToolbarFilter">%core.app_dir%/../../src/lib/AgaviDebugToolbar/AgaviDebugToolbarFilter.class.php</autoload>
+	<autoload name="DebugToolbarLogAppender">%core.app_dir%/../../src/lib/AgaviDebugToolbar/DebugToolbarLogAppender.class.php</autoload>
 </autoloads>

@@ -7,6 +7,9 @@ class Default_IndexSuccessView extends AdtDemoDefaultBaseView
 		$this->setupHtml($rd);
 
 		$this->setAttribute('title', 'Index');
+		
+		$this->context->getLoggerManager()->log('Look Ma! Me debugging '.__CLASS__, 'debug');
+		
 	}
 }
 

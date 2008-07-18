@@ -9,55 +9,10 @@ function _s($string) {
 
 <div id="adt-container">
 
-<!-- this cannot be here -->
-<style type="text/css">
-.tab-wrapper {
-	padding: 1em 1.5em;
-	margin: 0;
-	border: 1px solid #eee;
-	clear: both;
-}
-
-.tab-menu {
-	margin: 0;
-	margin-top: 1em;
-	padding: 0;
-	list-style: none;
-	overflow: auto;
-}
-
-.tab-menu li {
-	margin: 0;
-	margin-right: 1em;
-	padding: 0;
-	float: left;
-	line-height: 2em;
-	border-top: 1px solid #eee;
-	border-left: 1px solid #eee;
-	border-right: 1px solid #eee;
-	background: url('tab-back.png') repeat-x bottom left;
-}
-.tab-menu li.tab-selected {
-	background: url('tab-sel-back.png') repeat-x top left;
-}
-.tab-menu li a {
-	padding: 0 .5em;
-	font-weight: bold;
-}
-
-.tab-menu li:hover, .tab-menu li:focus {
-	background: url('tab-sel-back.png') repeat-x top left;
-}
-
-.tab-menu li.tab-selected a {
-	color: #000;
-}
-</style>
-
 <?php if ($this->hasParameter('js')) foreach($this->getParameter('js') as $js) :?>
 	<script type="text/javascript" src="<?php echo $this->getParameter('modpub').'/'.$js; ?>"></script>
 <?php endforeach; ?>
-	<h1>Agavi Debug Log</h1>
+	<h1>Debug Log</h1>
 
 	<div id="sections">
 		<h2>Matched Routes</h2>
@@ -162,12 +117,23 @@ function _s($string) {
 
 		<h2>Request</h2>
 		<div id="adtBlock_Request" >
-		{adtBlock_Request}
+			<ul>
+			<?php foreach($template['request_data'] as $parameter => $value ): ?>
+				<li><?php echo $parameter;?>: <?php var_dump($value); ?></li>
+			<?php endforeach; ?>
+			</ul>
 		</div>
 		  
 		<h2>View</h2>
 		<div id="adtBlock_View" >
-		{adtBlock_View}
+			<?php echo $template['view']; ?>
+		</div>
+		  
+		<h2>Log</h2>
+		<div>
+			<?php foreach($template['log'] as $logLine): ?>
+				<?php echo $logLine['timestamp']->format('c') ?>: <?php echo _s($logLine['message']); ?><br/> 
+			<?php endforeach; ?>
 		</div>
 	</div><!-- sections / tabs -->
 </div>

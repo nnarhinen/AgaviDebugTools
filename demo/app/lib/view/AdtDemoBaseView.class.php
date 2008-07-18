@@ -37,6 +37,7 @@ class AdtDemoBaseView extends AgaviView
 	public function setupHtml(AgaviRequestDataHolder $rd, $layoutName = null)
 	{
 		$this->loadLayout($layoutName);
+		$this->context->getLoggerManager()->log('Look Ma! Me debugging '.__CLASS__, 'debug');
 	}
 }
 
