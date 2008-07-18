@@ -7,11 +7,10 @@
  * @version   0.1
  * 
  * @todo 
- * 1. Read information about childs
- * 2. Get information about callback class(?)
- * 3. Get information about output_type
- * 4. Add JavaScript using DOM, not str_replace
- * 5. Add CSS using DOM, not str_replace
+ *  Get information about callback class(?)
+ *  Get information about output_type
+ *  Add JavaScript using DOM, not str_replace
+ *  Add CSS using DOM, not str_replace
  */
 class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter, AgaviIActionFilter 
 {
