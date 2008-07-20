@@ -1,6 +1,0 @@
-Integration with logger
-
-Add "invisible_mode" - Toolbar is hidden but all informations are logged into logger/external file (?)
-
-Read informations about childs of route, simply way is read them by AJAX dynamically 
-
