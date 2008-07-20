@@ -115,18 +115,17 @@ function _s($string) {
 		<?php endforeach; //routes ?> 
 		</div><!-- routing -->
 
-		<h2>Request</h2>
+		<h2>Global Request Data</h2>
 		<div id="adtBlock_Request" >
-			<ul>
-			<?php foreach($template['request_data'] as $parameter => $value ): ?>
-				<li><?php echo $parameter;?>: <?php var_dump($value); ?></li>
-			<?php endforeach; ?>
-			</ul>
+			TODO
 		</div>
 		  
-		<h2>View</h2>
+		<h2>Actions</h2>
 		<div id="adtBlock_View" >
-			<?php echo $template['view']; ?>
+		<?php foreach($template['actions'] as $action): ?>
+			<h3><?php echo $action['module']; ?>.<?php echo $action['name']; ?></h3>
+			<?php echo $action['view']; ?>
+		<?php endforeach; ?>
 		</div>
 		  
 		<h2>Log</h2>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <filters>
 <!-- 
-	Copy and paste this into your app/config/global_filters.xml
+	Copy and paste this into your app/config/action_filters.xml
 	or use XInclude (like the demo app)
 -->
 	<filter name="AgaviDebugToolbarFilter" class="AgaviDebugToolbarFilter">

@@ -36,8 +36,16 @@ class AdtDemoBaseView extends AgaviView
 	 */
 	public function setupHtml(AgaviRequestDataHolder $rd, $layoutName = null)
 	{
-		$this->loadLayout($layoutName);
 		$this->context->getLoggerManager()->log('Look Ma! Me debugging '.__CLASS__, 'debug');
+		if ($layoutName === null && $this->container->getParameter('is_slot')) {
+			$layoutName = 'slot';
+		}
+		$this->loadLayout($layoutName);
+
+		if (!$this->container->getParameter('is_slot')) {
+			$menuContainer = $this->createSlotContainer('Default', 'Menu');
+			$this->getLayer('decorator')->setSlot('menu', $menuContainer);
+		}
 	}
 }
 

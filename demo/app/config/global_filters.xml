@@ -10,9 +10,6 @@
 				</parameter>
 			</filter>
 
-			<!-- this is why I (v-dogg) love XML configs  -->
-			<xi:include href="../../../config/global_filters-snippet.xml#xpointer(/filters/*)" />
-			
 		</filters>
 
 	</configuration>

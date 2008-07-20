@@ -3,10 +3,11 @@
  * Filter for displaying couple of informations :)
  *
  * @author    Daniel Ancuta <daniel.ancuta@whisnet.pl>
+ * @author    Veikko Mäkinen <veikko@veikko.fi>
  * @copyright Authors
  * @version   0.1
  */
-class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter, AgaviIActionFilter
+class AgaviDebugToolbarFilter extends AgaviDebugFilter implements AgaviIActionFilter
 {
 
 	/**
@@ -14,29 +15,27 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
 	 */
 	private $container = null;
 
-	public function execute(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
+	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
 	{
 		$this->container = $container;
 
+		//AgaviDebugFilter does the actual logging
+		parent::executeOnce($filterChain, $container);
+
+
 		$filterChain->execute($container);
 
-		# We're checking if we can add AgaviDebugToolbar to response
-		# If output type is one of our defined output types
+		// Check if we can inject AgaviDebugToolbar to response
+		// and if output type is one of our defined output types
 		if ( !$container->getResponse()->isContentMutable() ||
 		(is_array($this->getParameter('output_types')) &&
 		!in_array($container->getResponse()->getOutputType()->getName(), $this->getParameter('output_types')) ) ) {
 			return;
 		}
 
-		//stuff all data into this array
-		$template = array();
+		// Render the toolbar		
+		$template = $this->log;
 
-		$template['routes'] = $this->getMatchedRoutes();
-		$template['request_data'] = $this->getContext()->getRequest()->getRequestData()->getParameters();
-		$template['view'] = $this->adtGetViewHtml();
-		$template['log'] = $this->getLogLines();
-
-		// load the template
 		// TODO: handle relative and absolute paths
 		ob_start();
 		include(dirname(__FILE__) .'/'. $this->getParameter('template') );
@@ -44,11 +43,9 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
 		ob_end_clean();
 
 		// Inject AgaviDebugToolbar to response
-		// TODO: How to handle other output types?
-		//  - should we abstract the whole rendering part and have specialized renderers?
-
 		$output  = str_replace('</body>', $output."\n</body>", $container->getResponse()->getContent());
 
+		// FIXME
 		// ...now this is just stupid. I hate myself for this:
 		$cssOutput = '';
 		foreach($this->getParameter('css', array()) as $css) {
@@ -58,35 +55,9 @@ class AgaviDebugToolbarFilter extends AgaviFilter implements AgaviIGlobalFilter,
 		$output = str_replace('</head>', $cssOutput."\n</head>", $output);
 
 		$container->getResponse()->setContent($output);
-
-		#echo '<pre>';
-		#var_dump( $this->getContext()->getRouting()->getRoute('dupa') );
-		#var_dump( $this->getContext()->getRouting()->getRoute('dupa.itsChild') );
 	}
 
-	/**
-	 * Get array with matched routes
-	 *
-	 * @return array
-	 * @since 0.1
-	 */
-	private function getMatchedRoutes() {
-		# Array with information about matched routes, name of route is an index of array
-		$matchedRoutesInformation = array();
-		# Matched routes
-		$matchedRoutes = $this->getContext()->getRequest()->getAttribute('matched_routes', 'org.agavi.routing');
-
-		foreach( $matchedRoutes as $matchedRoute ) {
-			$matchedRoutesInformation[$matchedRoute] = $this->getContext()->getRouting()->getRoute($matchedRoute);
-		}
-
-		return $matchedRoutesInformation;
-	}
-
-	public function getLogLines()
-	{
-		return $this->context->getRequest()->getAttribute('log', 'debugtoolbar', array());
-	}
+	
 
 
 	/**
