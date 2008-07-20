@@ -8,10 +8,6 @@ function _s($string) {
 ?>
 
 <div id="adt-container">
-
-<?php if ($this->hasParameter('js')) foreach($this->getParameter('js') as $js) :?>
-	<script type="text/javascript" src="<?php echo $this->getParameter('modpub').'/'.$js; ?>"></script>
-<?php endforeach; ?>
 	<h1>Debug Log</h1>
 
 	<div id="sections">
@@ -117,7 +113,10 @@ function _s($string) {
 
 		<h2>Global Request Data</h2>
 		<div id="adtBlock_Request" >
-			TODO
+		  <?php foreach( $template['request_data'] as $parameter ): ?>
+		    <?php echo $parameter; ?>
+		    <br />
+		  <?php endforeach; ?>
 		</div>
 		  
 		<h2>Actions</h2>
@@ -127,12 +126,46 @@ function _s($string) {
 			<?php echo $action['view']; ?>
 		<?php endforeach; ?>
 		</div>
+
+		<?php if ( AgaviConfig::get('core.use_database') ): ?>
+		<h2>Databases</h2>
+		<div>
+		  <strong>Class name</strong>: <?php echo $template['database']['class_name']; ?>
+		</div>
+		<?php endif; ?>
 		  
 		<h2>Log</h2>
 		<div>
 			<?php foreach($template['log'] as $logLine): ?>
 				<?php echo $logLine['timestamp']->format('c') ?>: <?php echo _s($logLine['message']); ?><br/> 
 			<?php endforeach; ?>
+		</div>
+		
+		<h2>Environment</h2>
+		<div>
+		  <strong>Environment</strong>: <?php echo AgaviConfig::get('core.environment'); ?>
+		  <br />
+		  <strong style="text-decoration: underline;">Locations</strong>
+		  <br />
+		  <strong>App</strong>: <?php echo AgaviConfig::get('core.app_dir'); ?>
+		  <br />
+		  <strong>Cache</strong>: <?php echo AgaviConfig::get('core.cache_dir'); ?>
+		  <br />
+		  <strong>Config</strong>: <?php echo AgaviConfig::get('core.config_dir'); ?>
+		  <br />
+		  <strong>Lib</strong>: <?php echo AgaviConfig::get('core.lib_dir'); ?>
+		  <br />
+		  <strong>Modules:</strong>: <?php echo AgaviConfig::get('core.module_dir'); ?>
+		  <br />
+		  <strong>Templates</strong>: <?php echo AgaviConfig::get('core.template_dir'); ?>
+		  
+		  <br />
+		  <br />
+		  <strong style="text-decoration: underline;">Agavi</strong>
+		  <br />
+		  <strong>Version</strong>: <?php echo AgaviConfig::get('agavi.version'); ?>
+		  <br />
+		  <strong>Location</strong>: <?php echo AgaviConfig::get('core.agavi_dir'); ?>
 		</div>
 	</div><!-- sections / tabs -->
 </div>

@@ -47,12 +47,20 @@ class AgaviDebugToolbarFilter extends AgaviDebugFilter implements AgaviIActionFi
 
 		// FIXME
 		// ...now this is just stupid. I hate myself for this:
+		// Yeah, but I also must add JS here.
+		// What we can use here? DOM extension(http://php.net/manual/en/book.dom.php)?
 		$cssOutput = '';
 		foreach($this->getParameter('css', array()) as $css) {
 			$cssOutput .= sprintf('<link rel="stylesheet" type="text/css" href="%s" />',
-			$this->getParameter('modpub') . '/' . $css);
+			              $this->getParameter('modpub') . '/' . $css)."\n";
 		}
-		$output = str_replace('</head>', $cssOutput."\n</head>", $output);
+		$jsOutput = '';
+		foreach( $this->getParameter('js') as $js ) {
+		  $jsOutput .= sprintf('<script type="text/javascript" src="%s"></script>',
+		               $this->getParameter('modpub').'/'.$js)."\n";
+		}
+		
+		$output = str_replace('</head>', $cssOutput.$jsOutput."\n</head>", $output);
 
 		$container->getResponse()->setContent($output);
 	}

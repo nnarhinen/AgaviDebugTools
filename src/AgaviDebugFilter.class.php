@@ -12,16 +12,23 @@ class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
 {
 
 	protected $log = array();
+  /**
+   * @var AgaviExecutionContainer
+   */
+  private $container = null;
 
 	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
 	{
+	  $this->container = $container;
+	  
 		$this->context->getLoggerManager()->log(__CLASS__.' executeOnce', 'debug');
 		$this->execute($filterChain, $container);
 		
-		$this->log['routes'] = $this->getMatchedRoutes();
+		$this->log['routes']       = $this->getMatchedRoutes();
 		$this->log['request_data'] = $this->getContext()->getRequest()->getRequestData()->getParameters();
-		$this->log['view'] = $this->adtGetViewHtml();
-		$this->log['log'] = $this->getLogLines();
+		$this->log['view']         = $this->adtGetViewHtml();
+		$this->log['log']          = $this->getLogLines();
+		$this->log['database']     = $this->adtGetDatabase();
 		
 	}
 
@@ -39,10 +46,10 @@ class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
 	{
 		//keep this simple for now
 		$this->log['actions'][] = array (
-			'name' => $container->getActionName(),
-			'module' => $container->getModuleName(),
+			'name'         => $container->getActionName(),
+			'module'       => $container->getModuleName(),
 			'request_data' => $container->getRequestData(),
-			'view' => $this->adtGetViewHtml(),
+			'view'         => $this->adtGetViewHtml()
 		);
 	}
 	
@@ -63,6 +70,24 @@ class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		}
 
 		return $matchedRoutesInformation;
+	}
+	
+	/**
+	 * Get informations about database
+	 * 
+	 * @since 0.1
+	 * @todo 
+	 * Integration with Propel logger ( http://propel.phpdb.org/trac/wiki/Users/Documentation/1.3/ConfigureLogging ) for 1.3 version
+	 */
+	private function adtGetDatabase() {
+	  $database = array();
+	  if ( !AgaviConfig::get('core.use_database') ) {
+	    return $database;
+	  }
+	  
+	  $database['class_name'] = get_class($this->container->getContext()->getDatabaseManager()->getDatabase());
+	  
+	  return $database;
 	}
 
 	public function getLogLines()
