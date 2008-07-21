@@ -6,6 +6,8 @@
  * @author    Veikko Mäkinen <veikko@veikko.fi>
  * @copyright Authors
  * @version   0.1
+ * @todo
+ * Get informations about translation
  */
 class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
 {
@@ -76,7 +78,7 @@ class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
    *
    * @since 0.1
    * @todo
-   * Integration with Propel logger ( http://propel.phpdb.org/trac/wiki/Users/Documentation/1.3/ConfigureLogging ) for 1.3 version
+   * Integration with Propel logger ( http://propel.phpdb.org/trac/wiki/Users/Documentation/1.3/ConfigureLogging )
    */
   private function adtGetDatabase() {
     $database = array();
