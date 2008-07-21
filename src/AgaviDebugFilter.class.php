@@ -30,7 +30,7 @@ class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
     $this->log['view']         = $this->adtGetViewHtml();
     $this->log['log']          = $this->getLogLines();
     $this->log['database']     = $this->adtGetDatabase();
-
+    $this->log['tm']           = $this->getContext()->getTranslationManager();
   }
 
   public function execute(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)

@@ -125,6 +125,11 @@ function _s($string) {
       <?php echo $action['view']; ?>
     <?php endforeach; ?>
     </div>
+    
+    <h2>FPF</h2>
+    <div>
+      FormPopulationFilter TODO
+    </div>
 
     <?php if ( AgaviConfig::get('core.use_database') ): ?>
     <h2>Databases</h2>
@@ -132,13 +137,31 @@ function _s($string) {
       <strong>Class name</strong>: <?php echo $template['database']['class_name']; ?>
     </div>
     <?php endif; ?>
-
-    <h2>Log</h2>
+    
+    <?php if ( AgaviConfig::get('core.use_translation') ): ?>
+    <h2>Translation</h2>
     <div>
-      <?php foreach($template['log'] as $logLine): ?>
-        <?php echo $logLine['timestamp']->format('c') ?>: <?php echo _s($logLine['message']); ?><br/>
-      <?php endforeach; ?>
+      <strong>Current locale</strong>: <?php echo $template['tm']->getCurrentLocaleIdentifier(); ?>
+      <br />
+      <strong>Default locale</strong>: <?php echo $template['tm']->getDefaultLocaleIdentifier(); ?>
+    
+      <br /><br />
+    
+      <strong>Available locales</strong>
+      <br />
+      <ul>
+        <?php foreach ( $template['tm']->getAvailableLocales() as $locale ): ?>
+        <li>
+          <strong><?php echo $locale['parameters']['description']; ?></strong>
+          <br />
+          Identifier: <?php echo $locale['identifier']; ?>
+          <br />
+          Language: <?php echo $locale['identifierData']['language'] ?>
+        </li>
+        <?php endforeach; ?>
+      </ul>
     </div>
+    <?php endif; ?>
 
     <h2>Environment</h2>
     <div>
@@ -205,6 +228,13 @@ function _s($string) {
       <strong>Version</strong>: <?php echo AgaviConfig::get('agavi.version'); ?>
       <br />
       <strong>Location</strong>: <?php echo AgaviConfig::get('core.agavi_dir'); ?>
+    </div>
+    
+    <h2>Log</h2>
+    <div>
+      <?php foreach($template['log'] as $logLine): ?>
+        <?php echo $logLine['timestamp']->format('c') ?>: <?php echo _s($logLine['message']); ?><br/>
+      <?php endforeach; ?>
     </div>
   </div><!-- sections / tabs -->
 </div>
