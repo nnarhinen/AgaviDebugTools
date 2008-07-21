@@ -8,32 +8,16 @@ window.addEvent("domready", function(){
 		selector: 'h2'
 	});
 
-  /**
-   * Display blocks
-   * /
-  $each( $$("a[id^=adtMenu_]"), function(el){
-    el.addEvent("click", function(event){
-      event.stop();
-      
-      elId = this.id.split("_");
-      
-      if ( $("adtBlock_"+elId[1]).getStyle("display") == "none" ) {
-        $("adtBlock_"+elId[1]).setStyle("display", "block");
-      } else {
-        $("adtBlock_"+elId[1]).setStyle("display", "none");
-      }
-    });
-  });
 
   /**
    * Events: Routing
    *
-   * /
+   */
   // Show details about matched route
   $each( $$("a[id^=adtMatchedRouteShow_]"), function(el){
     el.addEvent("click", function(event){
       event.stop();
-      
+
       elId = this.id.split("_");
       
       if ( $("adtMatchedRouteInfo_"+elId[1]).getStyle("display") == "none" ) {
@@ -43,9 +27,11 @@ window.addEvent("domready", function(){
       }
     });
   });
+  
  
   // Show details about route output type
   $each( $$("a[id^=adtMatchedRouteOutputTypeShow_]"), function(el){
+  alert("dd")
     el.addEvent("click", function(event){
       event.stop();
       

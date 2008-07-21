@@ -10,6 +10,12 @@
 			</route>
 			
 			<route name="index" pattern="^/$" module="%actions.default_module%" action="%actions.default_action%" />
+			
+			<route name="heniuRoute" pattern="^/heniu/jest-({id:[0-9]+})-tu$" module="%actions.default_module%" action="%actions.default_action%">
+			 <defaults>
+			   <default for="id">99</default>
+			 </defaults>
+			</route>
 		</routes>
 	</configuration>
 </configurations>
