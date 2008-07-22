@@ -22,19 +22,19 @@ function _s($string) {
       <div id="adtMatchedRouteInfo_<?php echo md5($routeName); ?>" style="display: none; border: 1px black solid; margin-top: 5px; padding: 3px;">
         <strong style="text-decoration: underline;"><?php echo $routeName; ?></strong>
         <dl>
-          <dt>Module:</dt>
+          <dt><strong>Module</strong>:</dt>
             <dd><?php echo $routeInfo['opt']['module']; ?></dd>
-          <dt>Action:</dt>
+          <dt><strong>Action</strong>:</dt>
             <dd><?php echo $routeInfo['opt']['action']; ?></dd>
-          <dt>Stop:</dt>
+          <dt><strong>Stop</strong>:</dt>
             <dd><?php echo $routeInfo['opt']['stop']==true ? 'True' : 'False'; ?></dd>
-          <dt>Parameters:</dt>
+          <dt><strong>Parameters</strong>:</dt>
           <dd>
             <?php if(count($routeInfo['par'])): ?>
             <ul>
             <?php foreach( $routeInfo['par'] as $oneParameter ): ?>
-              <li><strong><?php echo $oneParameter ?></strong><br />
-              Default:
+              <li><strong style="text-decoration: underline;"><?php echo $oneParameter ?></strong><br />
+              <strong>Default</strong>:
               <?php if ( isset($routeInfo['opt']['defaults'][$oneParameter]) ): ?>
               <ul>
                 <li>Pre: <?php echo $routeInfo['opt']['defaults'][$oneParameter]['pre']; ?></li>
@@ -45,7 +45,7 @@ function _s($string) {
               No default
               <?php endif; ?>
               <br />
-              Required: <?php echo isset($routeInfo['opt']['optional_parameters'][$oneParameter]) ? 'False' : 'True'; ?>
+              <strong>Required</strong>: <?php echo isset($routeInfo['opt']['optional_parameters'][$oneParameter]) ? 'False' : 'True'; ?>
               </li>
             <?php endforeach; ?>
             </ul>
@@ -53,16 +53,14 @@ function _s($string) {
             No Parameters
             <?php endif; ?>
           </dd>
-          
-        <dt><strong>Output type</strong>:</dt>
-        <dd>
+
         <?php
           $otTimeName = time()+rand();
           $otName = empty($routeInfo['opt']['output_type']) ? $this->getContext()->getController()->getOutputType()->getName() : $routeInfo['opt']['output_type'];
           $outputType = $this->getContext()->getController()->getOutputType($otName);
         ?>
-        <a id="adtMatchedRouteOutputTypeShow_<?php echo $otTimeName; ?>" href="#"><?php echo $otName;  ?></a>
-
+        <dt><strong>Output type</strong>: <a id="adtMatchedRouteOutputTypeShow_<?php echo $otTimeName; ?>" href="#"><?php echo $otName;  ?></a></dt>
+        <dd>
         <div id="adtMatchedRouteOutputTypeInfo_<?php echo $otTimeName; ?>" style="display: none;">
           Has renderers:  <?php echo $outputType->hasRenderers()==true ? 'True' : 'False'; ?><br />
           Default layout name: <?php echo $outputType->getDefaultLayoutName(); ?>
@@ -74,7 +72,7 @@ function _s($string) {
         ?>
         </dd>
 
-        <dt>Ignores:</dt>
+        <dt><strong>Ignores</strong>:</dt>
         <dd>
         <?php if ( count( $routeInfo['opt']['ignores'] ) != 0 ): ?>
         <ul>
@@ -87,33 +85,35 @@ function _s($string) {
         <?php endif; ?>
         </dd>
 
-        <dt>Children:</dt>
+        <dt><strong>Children</strong>:</dt>
         <dd>
         <?php if (count($routeInfo['opt']['childs']) != null ): ?>
           <ul>
           <?php foreach( $routeInfo['opt']['childs'] as $children ): ?>
-            <li>'.$children.'</li>
+            <li><?php echo $children; ?></li>
           <?php endforeach; ?>
           </ul>
+        <?php else: ?>
+        No children
         <?php endif; ?>
         </dd>
 
-        <dt>Callback:</dt> 
+        <dt><strong>Callback</strong>:</dt>
         <dd>
-        <?php echo $routeInfo['opt']['callback']; ?>
+        <?php echo !empty( $routeInfo['opt']['callback'] )?$routeInfo['opt']['callback']:' No callback '; ?>
         </dd>
-        
-        <dt>Imply:</dt> 
+
+        <dt><strong>Imply</strong>:</dt>
         <dd>
         <?php echo $routeInfo['opt']['imply']==true?'True':'False'; ?>
         </dd>
-        
-        <dt>Cut:</dt>
+
+        <dt><strong>Cut</strong>:</dt>
         <dd>
         <?php echo $routeInfo['opt']['cut']==true?'True':'False'; ?>
         </dd>
-        
-        <dt>rpx:</dt>
+
+        <dt><strong>rpx</strong>:</dt>
         <dd>
         <?php echo _s($routeInfo['rxp']); ?>
         </dd>
@@ -137,7 +137,7 @@ function _s($string) {
       <?php echo $action['view']; ?>
     <?php endforeach; ?>
     </div>
-    
+
     <h2>FPF</h2>
     <div>
       FormPopulationFilter TODO
@@ -149,16 +149,16 @@ function _s($string) {
       <strong>Class name</strong>: <?php echo $template['database']['class_name']; ?>
     </div>
     <?php endif; ?>
-    
+
     <?php if ( AgaviConfig::get('core.use_translation') ): ?>
     <h2>Translation</h2>
     <div>
       <strong>Current locale</strong>: <?php echo $template['tm']->getCurrentLocaleIdentifier(); ?>
       <br />
       <strong>Default locale</strong>: <?php echo $template['tm']->getDefaultLocaleIdentifier(); ?>
-    
+
       <br /><br />
-    
+
       <strong>Available locales</strong>
       <br />
       <ul>
@@ -178,70 +178,86 @@ function _s($string) {
     <h2>Environment</h2>
     <div>
       <strong>Environment</strong>: <?php echo AgaviConfig::get('core.environment'); ?>
-      <br />
-      <strong style="text-decoration: underline;">Settings</strong>
+
       <br /><br />
+
       <strong style="text-decoration: underline;">Defaults</strong>
-      <br />
-      <strong>Module</strong>: <?php echo AgaviConfig::get('actions.default_module'); ?>
-      <br />
-      <strong>Action</strong>: <?php echo AgaviConfig::get('actions.default_action'); ?>
-      <br /><br />
-      <strong>404</strong>
-      <br />
-      <strong>Module</strong>: <?php echo AgaviConfig::get('actions.error_404_module'); ?>
-      <br />
-      <strong>Action</strong>: <?php echo AgaviConfig::get('actions.error_404_action'); ?>
-      <br /><br />
-      <strong>Unavailable</strong>
-      <br />
-      <strong>Module</strong>: <?php echo AgaviConfig::get('actions.module_disabled_module'); ?>
-      <br />
-      <strong>Action</strong>: <?php echo AgaviConfig::get('actions.module_disabled_action'); ?>
-      <br /><br />
-      <strong>Disabled</strong>
-      <br />
-      <strong>Module</strong>: <?php echo AgaviConfig::get('actions.unavailable_module'); ?>
-      <br />
-      <strong>Action</strong>: <?php echo AgaviConfig::get('actions.unavailable_action'); ?>
-      <br /><br />
-      <strong>Secure</strong>
-      <br />
-      <strong>Module</strong>: <?php echo AgaviConfig::get('actions.secure_module'); ?>
-      <br />
-      <strong>Action</strong>: <?php echo AgaviConfig::get('actions.secure_action'); ?>
-      <br /><br />
-      <strong>Login</strong>
-      <br />
-      <strong>Module</strong>: <?php echo AgaviConfig::get('actions.login_module'); ?>
-      <br />
-      <strong>Action</strong>: <?php echo AgaviConfig::get('actions.login_action'); ?>
-      <br />
+      <dl>
+        <dt><strong>Module and action</strong></dt>
+          <dd>
+            <strong>Module</strong>: <?php echo AgaviConfig::get('actions.default_module'); ?>
+            <br />
+            <strong>Action</strong>: <?php echo AgaviConfig::get('actions.default_action'); ?>
+          </dd>
 
-      <br />
+        <dt><strong>404</strong></dt>
+          <dd>
+            <strong>Module</strong>: <?php echo AgaviConfig::get('actions.error_404_module'); ?>
+            <br />
+            <strong>Action</strong>: <?php echo AgaviConfig::get('actions.error_404_action'); ?>
+          </dd>
+
+        <dt><strong>Unavailable</strong></dt>
+          <dd>
+            <strong>Module</strong>: <?php echo AgaviConfig::get('actions.module_disabled_module'); ?>
+            <br />
+            <strong>Action</strong>: <?php echo AgaviConfig::get('actions.module_disabled_action'); ?>
+          </dd>
+        <dt><strong>Disabled</strong></dt>
+          <dd>
+            <strong>Module</strong>: <?php echo AgaviConfig::get('actions.unavailable_module'); ?>
+            <br />
+            <strong>Action</strong>: <?php echo AgaviConfig::get('actions.unavailable_action'); ?>
+          </dd>
+        <dt><strong>Secure</strong></dt>
+          <dd>
+            <strong>Module</strong>: <?php echo AgaviConfig::get('actions.secure_module'); ?>
+            <br />
+            <strong>Action</strong>: <?php echo AgaviConfig::get('actions.secure_action'); ?>
+          </dd>
+        <dt><strong>Login</strong></dt>
+          <dd>
+            <strong>Module</strong>: <?php echo AgaviConfig::get('actions.login_module'); ?>
+            <br />
+            <strong>Action</strong>: <?php echo AgaviConfig::get('actions.login_action'); ?>
+          </dd>
+      </dl>
+
+      <br /><br />
+
       <strong style="text-decoration: underline;">Locations</strong>
-      <br />
-      <strong>App</strong>: <?php echo AgaviConfig::get('core.app_dir'); ?>
-      <br />
-      <strong>Cache</strong>: <?php echo AgaviConfig::get('core.cache_dir'); ?>
-      <br />
-      <strong>Config</strong>: <?php echo AgaviConfig::get('core.config_dir'); ?>
-      <br />
-      <strong>Lib</strong>: <?php echo AgaviConfig::get('core.lib_dir'); ?>
-      <br />
-      <strong>Modules:</strong>: <?php echo AgaviConfig::get('core.module_dir'); ?>
-      <br />
-      <strong>Templates</strong>: <?php echo AgaviConfig::get('core.template_dir'); ?>
+      <dl>
+        <dt><strong>App</strong>:</dt>
+         <dd><?php echo AgaviConfig::get('core.app_dir'); ?></dd>
 
-      <br />
-      <br />
+        <dt><strong>Cache</strong>:</dt>
+         <dd><?php echo AgaviConfig::get('core.cache_dir'); ?></dd>
+
+        <dt><strong>Config</strong>:</dt>
+         <dd><?php echo AgaviConfig::get('core.config_dir'); ?></dd>
+
+        <dt><strong>Lib</strong>:</dt>
+          <dd><?php echo AgaviConfig::get('core.lib_dir'); ?></dd>
+
+        <dt><strong>Modules</strong>:</dt>
+          <dd><?php echo AgaviConfig::get('core.module_dir'); ?></dd>
+
+        <dt><strong>Templates</strong>:</dt>
+          <dd><?php echo AgaviConfig::get('core.template_dir'); ?></dd>
+      </dl>
+
+      <br /><br />
+
       <strong style="text-decoration: underline;">Agavi</strong>
-      <br />
-      <strong>Version</strong>: <?php echo AgaviConfig::get('agavi.version'); ?>
-      <br />
-      <strong>Location</strong>: <?php echo AgaviConfig::get('core.agavi_dir'); ?>
+      <dl>
+        <dt><strong>Version</strong>:</dt>
+          <dd><?php echo AgaviConfig::get('agavi.version'); ?></dd>
+
+        <dt><strong>Location</strong>:</dt>
+          <dd><?php echo AgaviConfig::get('core.agavi_dir'); ?></dd>
+      </dl>
     </div>
-    
+
     <h2>Log</h2>
     <div>
       <?php foreach($template['log'] as $logLine): ?>
