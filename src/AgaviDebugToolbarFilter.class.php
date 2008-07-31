@@ -67,32 +67,5 @@ class AgaviDebugToolbarFilter extends AgaviDebugFilter implements AgaviIActionFi
 
     $container->getResponse()->setContent($output);
   }
-
-  /**
-   * Generate HTML code for View
-   *
-   * @return string
-   * @since 0.1
-   */
-  protected function adtGetViewHtml() {
-    $viewTemplate = '';
-
-    $outputType = $this->getContext()->getController()->getOutputType( $this->container->getOutputType()->getName() );
-
-
-    $viewTemplate .= 'View name: '. $this->container->getViewName();
-    $viewTemplate .= '<br />';
-    $viewTemplate .= 'Output type: <a id="adtViewOutputTypeGet_'.md5($this->container->getOutputType()->getName()).'" href="#">'.$this->container->getOutputType()->getName().'</a>';
-    if ( strcmp($this->getContext()->getController()->getOutputType()->getName(), $this->container->getOutputType()->getName()) == 0 ) {
-      $viewTemplate .= ' ( default ) ';
-    }
-    $viewTemplate .= '<div id="adtViewOutputTypeInfo_'.md5($this->container->getOutputType()->getName()).'" >';
-    $viewTemplate .= 'Has renderers: ';
-    $viewTemplate .= $outputType->hasRenderers()==true?'True':'False';
-    $viewTemplate .= '<br />';
-    $viewTemplate .= 'Default layout name: '.$outputType->getDefaultLayoutName();
-    $viewTemplate .= '</div>';
-    return $viewTemplate;
-  }
 }
 ?>

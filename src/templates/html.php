@@ -134,7 +134,16 @@ function _s($string) {
     <div id="adtBlock_View" >
     <?php foreach($template['actions'] as $action): ?>
       <h3><?php echo $action['module']; ?>.<?php echo $action['name']; ?></h3>
-      <?php echo $action['view']; ?>
+      <strong>View name</strong>: <?php echo $template['view']['view_name']; ?>
+      <br />
+      <strong>Output type</strong>: <a href="#"><?php echo $template['view']['output_type']; ?></a>
+      <?php if ( strcmp($template['view']['output_type'], $template['view']['default_output_type']) == 0 ): ?>
+      ( default )
+      <?php endif; ?>
+      <br />
+      <strong>Has renderers</strong>: <?php echo $template['view']['has_renders']?'True':'False'; ?>
+      <br />
+      <strong>Default layout name</strong>: <?php echo $template['view']['default_layout_name']; ?>
     <?php endforeach; ?>
     </div>
 

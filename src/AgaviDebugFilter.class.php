@@ -6,13 +6,12 @@
  * @author    Veikko Mäkinen <veikko@veikko.fi>
  * @copyright Authors
  * @version   0.1
- * @todo
- * Get informations about translation
  */
 class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
 {
 
   protected $log = array();
+
   /**
    * @var AgaviExecutionContainer
    */
@@ -27,7 +26,7 @@ class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
 
     $this->log['routes']       = $this->getMatchedRoutes();
     $this->log['request_data'] = $this->getContext()->getRequest()->getRequestData()->getParameters();
-    $this->log['view']         = $this->adtGetViewHtml();
+    $this->log['view']         = $this->adtGetView();
     $this->log['log']          = $this->getLogLines();
     $this->log['database']     = $this->adtGetDatabase();
     $this->log['tm']           = $this->getContext()->getTranslationManager();
@@ -50,7 +49,7 @@ class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
       'name'         => $container->getActionName(),
       'module'       => $container->getModuleName(),
       'request_data' => $container->getRequestData(),
-      'view'         => $this->adtGetViewHtml()
+      'view'         => $this->adtGetView()
     );
   }
 
@@ -89,6 +88,26 @@ class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
     $database['class_name'] = get_class($this->container->getContext()->getDatabaseManager()->getDatabase());
 
     return $database;
+  }
+
+  /**
+   * Get information about view for action
+   *
+   * @return array
+   * @since 0.1
+   */
+  private function adtGetView() {
+    $result = array();
+
+    $outputType = $this->getContext()->getController()->getOutputType( $this->container->getOutputType()->getName() );
+
+    $result['view_name']           = $this->container->getViewName();
+    $result['output_type']         = $this->container->getOutputType()->getName();
+    $result['default_output_type'] = $this->getContext()->getController()->getOutputType()->getName();
+    $result['has_renders']         = $outputType->hasRenderers();
+    $result['default_layout_name'] = $outputType->getDefaultLayoutName();
+
+    return $result;
   }
 
   public function getLogLines()
