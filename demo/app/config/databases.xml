@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurations xmlns="http://agavi.org/agavi/1.0/config">
-  
+
   <configuration>
-    <databases default="propelom">
-      <database name="propelom" class="AgaviPropelDatabase">
-        <parameter name="config">%core.lib_dir%/propel/build/conf/bookstore-conf.php</parameter>
-        <!-- Overrides values from config file -->
-        <!--<parameter name="overrides">
-          <parameter name="connection">
-            <parameter name="username">cipa</parameter>
-          </parameter>
-        </parameter>
-        -->
-      </database>
-    </databases>
   </configuration>
-  
+
 </configurations>
