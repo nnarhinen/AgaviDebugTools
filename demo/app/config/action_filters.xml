@@ -5,7 +5,7 @@
 		<filters>
 
 			<!-- this is why I (v-dogg) love XML configs  -->
-			<xi:include href="../../../config/action_filters-snippet.xml#xpointer(/filters/*)" />
+			<xi:include href="../../../src/config/action_filters-snippet.xml#xpointer(/filters/*)" />
 
 		</filters>
 	</configuration>

@@ -8,7 +8,7 @@
 			<!-- logs only DEBUG messages -->
 			<logger name="debug" class="AgaviLogger" level="AgaviLogger::ALL">
 				<appenders>
-					<appender>DebugLogAppender</appender>
+				  <appender>DebugLogAppender</appender>
 				</appenders>
 			</logger>
 
@@ -17,7 +17,6 @@
 
 			<appender name="DebugLogAppender" class="DebugToolbarLogAppender" layout="PassthruLayout">
 			</appender>
-
 
 		</appenders>
 

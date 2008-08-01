@@ -6,5 +6,6 @@
 -->	
 	<autoload name="AgaviDebugFilter">%core.app_dir%/../../src/AgaviDebugFilter.class.php</autoload>
 	<autoload name="AgaviDebugToolbarFilter">%core.app_dir%/../../src/AgaviDebugToolbarFilter.class.php</autoload>
+	
 	<autoload name="DebugToolbarLogAppender">%core.app_dir%/../../src/DebugToolbarLogAppender.class.php</autoload>
 </autoloads>

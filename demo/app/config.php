@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+
 
 // +---------------------------------------------------------------------------+
 // | Should we run the system in debug mode? When this is on, there may be     |
@@ -53,4 +55,5 @@ AgaviConfig::set('core.app_dir', dirname(__FILE__));
 // |  - core.template_dir (defaults to "<core.app_dir>/templates")             |
 // +---------------------------------------------------------------------------+
 
+AgaviConfig::set('core.skip_config_validation', true);
 ?>

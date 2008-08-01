@@ -20,6 +20,8 @@
        </ignores>
        <route name=".second" pattern="^/second$" module="%actions.default_module%" action="actions.default_action" />
       </route>
+      
+      <route name="FPFTest" pattern="^/FPF$" module="%actions.default_module%" action="FPF" />
     </routes>
   </configuration>
 </configurations>
