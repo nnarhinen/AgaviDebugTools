@@ -14,7 +14,7 @@
 # Demo
 $demoModpubPath = dirname(__FILE__).'/demo/pub/modpub';
 # Dev
-$modpubPath     = dirname(__FILE__).'/modpub';
+$modpubPath     = dirname(__FILE__).'/src/modpub';
 
 # Remove all files and directories from demo
 $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($demoModpubPath), RecursiveIteratorIterator::CHILD_FIRST);
