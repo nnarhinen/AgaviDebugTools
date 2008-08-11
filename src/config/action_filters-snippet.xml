@@ -8,9 +8,10 @@
 		<parameter name="output_types">
 			<parameter>html</parameter>
 		</parameter>
-		<parameter name="modpub">modpub/AdtDebugToolbar</parameter>
+		<parameter name="modpub">modpub/Adt</parameter>
 		
 		<parameter name="template">templates/html.php</parameter>
+
 		<!-- for the HTML template, relative to modpub -->
 		<parameter name="css">
 			<parameter>css/adt.css</parameter>

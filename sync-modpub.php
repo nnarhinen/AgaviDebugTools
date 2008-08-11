@@ -14,7 +14,7 @@
 # Demo
 $demoModpubPath = dirname(__FILE__).'/demo/pub/modpub';
 # Dev
-$modpubPath     = dirname(__FILE__).'/src/modpub';
+$modpubPath     = dirname(__FILE__).'/modpub';
 
 # Remove all files and directories from demo
 $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($demoModpubPath), RecursiveIteratorIterator::CHILD_FIRST);
@@ -34,7 +34,7 @@ for(; $iterator->valid(); $iterator->next()) {
 }
 
 # Create our ADT dir in modpub :)
-mkdir("./demo/pub/modpub/AgaviDebugToolbar");
+mkdir("./demo/pub/modpub/Adt");
 
 
 # Copy and paste all needed files from dev to demo
@@ -48,9 +48,9 @@ for(; $iterator->valid(); $iterator->next()) {
   }
 
   if ( $rdi->isDir() ) {
-    mkdir('./demo/pub/modpub/AgaviDebugToolbar/'.$rdi->getSubPathname());
+    mkdir('./demo/pub/modpub/Adt/'.$rdi->getSubPathname());
   } else {
-    copy( $rdi->getPathname(), './demo/pub/modpub/AgaviDebugToolbar/'.$rdi->getSubPathname() );
+    copy( $rdi->getPathname(), './demo/pub/modpub/Adt/'.$rdi->getSubPathname() );
   }
 }
 ?>
