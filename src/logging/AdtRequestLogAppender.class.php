@@ -1,6 +1,6 @@
 <?php
 
-class DebugToolbarLogAppender extends AgaviLoggerAppender
+class AdtRequestLogAppender extends AgaviLoggerAppender
 {
 
 	public function write($message)

@@ -4,8 +4,8 @@
 	Copy and paste this into your app/config/autoload.xml (you need to adjust the path)
 	or use XInclude (like the demo app)
 -->	
-	<autoload name="AgaviDebugFilter">%core.app_dir%/../../src/AgaviDebugFilter.class.php</autoload>
-	<autoload name="AgaviDebugToolbarFilter">%core.app_dir%/../../src/AgaviDebugToolbarFilter.class.php</autoload>
+	<autoload name="AdtDebugFilter">%core.app_dir%/../../src/filter/AdtDebugFilter.class.php</autoload>
+	<autoload name="AdtDebugToolbarFilter">%core.app_dir%/../../src/filter/AdtDebugToolbarFilter.class.php</autoload>
 	
-	<autoload name="DebugToolbarLogAppender">%core.app_dir%/../../src/DebugToolbarLogAppender.class.php</autoload>
+	<autoload name="AdtRequestLogAppender">%core.app_dir%/../../src/logging/AdtRequestLogAppender.class.php</autoload>
 </autoloads>

@@ -4,11 +4,11 @@
 	Copy and paste this into your app/config/action_filters.xml
 	or use XInclude (like the demo app)
 -->
-	<filter name="AgaviDebugToolbarFilter" class="AgaviDebugToolbarFilter">
+	<filter name="AdtDebugToolbarFilter" class="AdtDebugToolbarFilter">
 		<parameter name="output_types">
 			<parameter>html</parameter>
 		</parameter>
-		<parameter name="modpub">modpub/AgaviDebugToolbar</parameter>
+		<parameter name="modpub">modpub/AdtDebugToolbar</parameter>
 		
 		<parameter name="template">templates/html.php</parameter>
 		<!-- for the HTML template, relative to modpub -->

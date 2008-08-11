@@ -8,14 +8,14 @@
 			<!-- logs only DEBUG messages -->
 			<logger name="debug" class="AgaviLogger" level="AgaviLogger::ALL">
 				<appenders>
-				  <appender>DebugLogAppender</appender>
+				  <appender>AdtRequestLogAppender</appender>
 				</appenders>
 			</logger>
 
 		</loggers>
 		<appenders>
 
-			<appender name="DebugLogAppender" class="DebugToolbarLogAppender" layout="PassthruLayout">
+			<appender name="AdtRequestLogAppender" class="AdtRequestLogAppender" layout="PassthruLayout">
 			</appender>
 
 		</appenders>

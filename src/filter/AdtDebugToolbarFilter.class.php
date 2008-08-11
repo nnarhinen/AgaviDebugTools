@@ -7,7 +7,7 @@
  * @copyright Authors
  * @version   0.1
  */
-class AgaviDebugToolbarFilter extends AgaviDebugFilter implements AgaviIActionFilter
+class AdtDebugToolbarFilter extends AdtDebugFilter implements AgaviIActionFilter
 {
   /**
    * @var AgaviExecutionContainer
@@ -37,7 +37,7 @@ class AgaviDebugToolbarFilter extends AgaviDebugFilter implements AgaviIActionFi
 
     // TODO: handle relative and absolute paths
     ob_start();
-    include(dirname(__FILE__) .'/'. $this->getParameter('template') );
+    include(dirname(__FILE__) .'/../'. $this->getParameter('template') );
     $output = ob_get_contents();
     ob_end_clean();
 

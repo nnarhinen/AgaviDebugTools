@@ -7,7 +7,7 @@
  * @copyright Authors
  * @version   0.1
  */
-class AgaviDebugFilter extends AgaviFilter implements AgaviIActionFilter
+class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 {
 
   protected $log = array();
