@@ -1,2 +1,0 @@
-We're actual working on
-http://adf.lighthouseapp.com/projects/14987-agavi-debug-filter/tickets?q=state%3Aopen

@@ -21,7 +21,9 @@ class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 
     //log global (i.e. not per action) stuff
     $this->log['routes']       = $this->getMatchedRoutes();
-    $this->log['request_data'] = $this->getContext()->getRequest()->getRequestData()->getParameters();
+    $this->log['request_data'] = array('request_parameters' => $this->getContext()->getRequest()->getRequestData()->getParameters(),
+                                       'cookies'            => $this->getContext()->getRequest()->getRequestData()->getCookies(),
+                                       'headers'            => $this->getContext()->getRequest()->getRequestData()->getHeaders() );
     $this->log['log']          = $this->getLogLines();
     $this->log['database']     = $this->adtGetDatabase();
     $this->log['tm']           = $this->getContext()->getTranslationManager();
