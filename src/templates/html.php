@@ -153,16 +153,16 @@ function _s($string) {
       <?php foreach($template['actions'] as $action): ?>
       <h3><?php echo $action['module']; ?>.<?php echo $action['name']; ?></h3>
       <div>
-        View name: <?php echo $template['view']['view_name']; ?>
+        View name: <?php echo $action['view']['view_name']; ?>
         <br />
-        Output type: <a href="#"><?php echo $template['view']['output_type']; ?></a>
-        <?php if ( strcmp($template['view']['output_type'], $template['view']['default_output_type']) == 0 ): ?>
+        Output type: <a href="#"><?php echo $action['view']['output_type']; ?></a>
+        <?php if ( strcmp($action['view']['output_type'], $action['view']['default_output_type']) == 0 ): ?>
         ( default )
         <?php endif; ?>
         <br />
-        Has renderers: <?php echo $template['view']['has_renders']?'True':'False'; ?>
+        Has renderers: <?php echo $action['view']['has_renders']?'True':'False'; ?>
         <br />
-        Default layout name: <?php echo $template['view']['default_layout_name']; ?>
+        Default layout name: <?php echo $action['view']['default_layout_name']; ?>
       </div>
       <?php endforeach; ?>
     </div>
