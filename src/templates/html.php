@@ -185,83 +185,84 @@ function _s($string) {
 		<div>
 			Environment: <?php echo AgaviConfig::get('core.environment'); ?>
 
-			<br /><br />
-
-			<strong style="text-decoration: underline;">Defaults</strong>
-			<dl>
-				<dt>Module and action</dt>
+			<h3>Defaults</h3>
+			<div>
+				<dl>
+					<dt>Module and action</dt>
 					<dd>
 						Module: <?php echo AgaviConfig::get('actions.default_module'); ?>
 						<br />
 						Action: <?php echo AgaviConfig::get('actions.default_action'); ?>
 					</dd>
-
-				<dt>404</dt>
+	
+					<dt>404</dt>
 					<dd>
 						Module: <?php echo AgaviConfig::get('actions.error_404_module'); ?>
 						<br />
 						Action: <?php echo AgaviConfig::get('actions.error_404_action'); ?>
 					</dd>
-
-				<dt>Unavailable</dt>
+	
+					<dt>Unavailable</dt>
 					<dd>
 						Module: <?php echo AgaviConfig::get('actions.module_disabled_module'); ?>
 						<br />
 						Action: <?php echo AgaviConfig::get('actions.module_disabled_action'); ?>
 					</dd>
-				<dt>Disabled</dt>
+	
+					<dt>Disabled</dt>
 					<dd>
 						Module: <?php echo AgaviConfig::get('actions.unavailable_module'); ?>
 						<br />
 						Action: <?php echo AgaviConfig::get('actions.unavailable_action'); ?>
 					</dd>
-				<dt>Secure</dt>
+					<dt>Secure</dt>
 					<dd>
 						Module: <?php echo AgaviConfig::get('actions.secure_module'); ?>
 						<br />
 						Action: <?php echo AgaviConfig::get('actions.secure_action'); ?>
 					</dd>
-				<dt>Login</dt>
+					<dt>Login</dt>
 					<dd>
 						Module: <?php echo AgaviConfig::get('actions.login_module'); ?>
 						<br />
 						Action: <?php echo AgaviConfig::get('actions.login_action'); ?>
 					</dd>
-			</dl>
+				</dl>
+			</div>
 
-			<br /><br />
-
-			<strong style="text-decoration: underline;">Locations</strong>
-			<dl>
-				<dt>App:</dt>
-				 <dd><?php echo AgaviConfig::get('core.app_dir'); ?></dd>
-
-				<dt>Cache:</dt>
-				 <dd><?php echo AgaviConfig::get('core.cache_dir'); ?></dd>
-
-				<dt>Config:</dt>
-				 <dd><?php echo AgaviConfig::get('core.config_dir'); ?></dd>
-
-				<dt>Lib:</dt>
+			<h3>Locations</h3>
+			<div>
+				<dl>
+					<dt>App:</dt>
+					<dd><?php echo AgaviConfig::get('core.app_dir'); ?></dd>
+	
+					<dt>Cache:</dt>
+					<dd><?php echo AgaviConfig::get('core.cache_dir'); ?></dd>
+	
+					<dt>Config:</dt>
+					<dd><?php echo AgaviConfig::get('core.config_dir'); ?></dd>
+	
+					<dt>Lib:</dt>
 					<dd><?php echo AgaviConfig::get('core.lib_dir'); ?></dd>
-
-				<dt>Modules:</dt>
+	
+					<dt>Modules:</dt>
 					<dd><?php echo AgaviConfig::get('core.module_dir'); ?></dd>
-
-				<dt>Templates:</dt>
+	
+					<dt>Templates:</dt>
 					<dd><?php echo AgaviConfig::get('core.template_dir'); ?></dd>
-			</dl>
+				</dl>
+			</div>
 
-			<br /><br />
-
-			<strong style="text-decoration: underline;">Agavi</strong>
-			<dl>
-				<dt>Version:</dt>
+			<h3>Agavi</h3>
+			<div>
+				<dl>
+					<dt>Version:</dt>
 					<dd><?php echo AgaviConfig::get('agavi.version'); ?></dd>
-
-				<dt>Location:</dt>
+	
+					<dt>Location:</dt>
 					<dd><?php echo AgaviConfig::get('core.agavi_dir'); ?></dd>
-			</dl>
+				</dl>
+			</div>
 		</div>
 
 		<h2>Log</h2>
