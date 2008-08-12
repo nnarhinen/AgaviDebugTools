@@ -56,7 +56,7 @@ function _s($string) {
 					?>
 					<dt>Output type: <a id="adtMatchedRouteOutputTypeShow_<?php echo $otTimeName; ?>" href="#"><?php echo $otName;	?></a></dt>
 					<dd>
-					<div id="adtMatchedRouteOutputTypeInfo_<?php echo $otTimeName; ?>" style="display: none;">
+					<div id="adtMatchedRouteOutputTypeInfo_<?php echo $otTimeName; ?>" >
 						Has renderers:	<?php echo $outputType->hasRenderers()==true ? 'True' : 'False'; ?><br />
 						Default layout name: <?php echo $outputType->getDefaultLayoutName(); ?>
 					</div>

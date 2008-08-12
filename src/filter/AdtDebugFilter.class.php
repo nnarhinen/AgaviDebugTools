@@ -12,21 +12,16 @@ class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 
   protected $log = array();
 
-  /**
-   * @var AgaviExecutionContainer
-   */
-  private $container = null;
-
   public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
   {
-    $this->container = $container;
-
     $this->context->getLoggerManager()->log(__CLASS__.' executeOnce', 'debug');
+    
+    //procede to execute  
     $this->execute($filterChain, $container);
 
+    //log global (i.e. not per action) stuff
     $this->log['routes']       = $this->getMatchedRoutes();
     $this->log['request_data'] = $this->getContext()->getRequest()->getRequestData()->getParameters();
-    $this->log['view']         = $this->adtGetView();
     $this->log['log']          = $this->getLogLines();
     $this->log['database']     = $this->adtGetDatabase();
     $this->log['tm']           = $this->getContext()->getTranslationManager();
@@ -38,7 +33,8 @@ class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 
     //procede
     $filterChain->execute($container);
-    //log what can be logged.
+
+    //now the action has been executed and we'll log what can be logged
     $this->log($container);
   }
 
@@ -49,7 +45,7 @@ class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
       'name'         => $container->getActionName(),
       'module'       => $container->getModuleName(),
       'request_data' => $container->getRequestData(),
-      'view'         => $this->adtGetView()
+      'view'         => $this->getViewInfo($container)
     );
   }
 
@@ -96,13 +92,13 @@ class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
    * @return array
    * @since 0.1
    */
-  private function adtGetView() {
+  private function getViewInfo(AgaviExecutionContainer $container) {
     $result = array();
 
-    $outputType = $this->getContext()->getController()->getOutputType( $this->container->getOutputType()->getName() );
+    $outputType = $this->getContext()->getController()->getOutputType( $container->getOutputType()->getName() );
 
-    $result['view_name']           = $this->container->getViewName();
-    $result['output_type']         = $this->container->getOutputType()->getName();
+    $result['view_name']           = $container->getViewName();
+    $result['output_type']         = $container->getOutputType()->getName();
     $result['default_output_type'] = $this->getContext()->getController()->getOutputType()->getName();
     $result['has_renders']         = $outputType->hasRenderers();
     $result['default_layout_name'] = $outputType->getDefaultLayoutName();
