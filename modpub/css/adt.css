@@ -9,6 +9,10 @@
 	font-size: 14px;  
 }
 
+dt {
+	font-weight: bold;
+}
+
 
 /**
  * SimpleTabs

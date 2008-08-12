@@ -12,15 +12,10 @@ function _s($string) {
 	<div id="sections">
 		<h2>Matched Routes</h2>
 		<div id="section-routing">
-			<ul>
-			<?php foreach($template['routes'] as $route): ?>
-				<li><a id="adtMatchedRouteShow_<?php echo md5($route['opt']['name']); ?>" href="#"><?php echo $route['opt']['name']; ?></a></li>
-			<?php endforeach; ?>
-			</ul>
 
 			<?php foreach($template['routes'] as $routeName => $routeInfo): ?>
-			<div id="adtMatchedRouteInfo_<?php echo md5($routeName); ?>" style="display: none; border: 1px black solid; margin-top: 5px; padding: 3px;">
-				<h3><?php echo $routeName; ?></h3>
+			<h3><?php echo $routeName; ?></h3>
+			<div>
 				<dl>
 					<dt>Module:</dt>
 						<dd><?php echo !empty($routeInfo['opt']['module']) ? $routeInfo['opt']['module'] : '&#160;'; ?></dd>
@@ -54,72 +49,72 @@ function _s($string) {
 						<?php endif; ?>
 					</dd>
 
-				<?php
-					$otTimeName = time()+rand();
-					$otName = empty($routeInfo['opt']['output_type']) ? $this->getContext()->getController()->getOutputType()->getName() : $routeInfo['opt']['output_type'];
-					$outputType = $this->getContext()->getController()->getOutputType($otName);
-				?>
-				<dt>Output type: <a id="adtMatchedRouteOutputTypeShow_<?php echo $otTimeName; ?>" href="#"><?php echo $otName;	?></a></dt>
-				<dd>
-				<div id="adtMatchedRouteOutputTypeInfo_<?php echo $otTimeName; ?>" style="display: none;">
-					Has renderers:	<?php echo $outputType->hasRenderers()==true ? 'True' : 'False'; ?><br />
-					Default layout name: <?php echo $outputType->getDefaultLayoutName(); ?>
-				</div>
-				<?php
-				if ( strcmp($this->getContext()->getController()->getOutputType()->getName(), $routeInfo['opt']['output_type']) == 0 ) {
-					echo ' ( default ) ';
-				}
-				?>
-				</dd>
-
-				<dt>Ignores:</dt>
-				<dd>
-				<?php if ( count( $routeInfo['opt']['ignores'] ) != 0 ): ?>
-				<ul>
-				<?php foreach( $routeInfo['opt']['ignores'] as $ignore ): ?>
-					<li><?php echo $ignore; ?></li>
-				<?php endforeach; ?>
-				</ul>
-				<?php else: ?>
-					No ignores
-				<?php endif; ?>
-				</dd>
-
-				<dt>Children:</dt>
-				<dd>
-				<?php if (count($routeInfo['opt']['childs']) != null ): ?>
+					<?php
+						$otTimeName = time()+rand();
+						$otName = empty($routeInfo['opt']['output_type']) ? $this->getContext()->getController()->getOutputType()->getName() : $routeInfo['opt']['output_type'];
+						$outputType = $this->getContext()->getController()->getOutputType($otName);
+					?>
+					<dt>Output type: <a id="adtMatchedRouteOutputTypeShow_<?php echo $otTimeName; ?>" href="#"><?php echo $otName;	?></a></dt>
+					<dd>
+					<div id="adtMatchedRouteOutputTypeInfo_<?php echo $otTimeName; ?>" style="display: none;">
+						Has renderers:	<?php echo $outputType->hasRenderers()==true ? 'True' : 'False'; ?><br />
+						Default layout name: <?php echo $outputType->getDefaultLayoutName(); ?>
+					</div>
+					<?php
+					if ( strcmp($this->getContext()->getController()->getOutputType()->getName(), $routeInfo['opt']['output_type']) == 0 ) {
+						echo ' ( default ) ';
+					}
+					?>
+					</dd>
+	
+					<dt>Ignores:</dt>
+					<dd>
+					<?php if ( count( $routeInfo['opt']['ignores'] ) != 0 ): ?>
 					<ul>
-					<?php foreach( $routeInfo['opt']['childs'] as $children ): ?>
-						<li><?php echo $children; ?></li>
+					<?php foreach( $routeInfo['opt']['ignores'] as $ignore ): ?>
+						<li><?php echo $ignore; ?></li>
 					<?php endforeach; ?>
 					</ul>
-				<?php else: ?>
-				No children
-				<?php endif; ?>
-				</dd>
-
-				<dt>Callback:</dt>
-				<dd>
-				<?php echo !empty( $routeInfo['opt']['callback'] )?$routeInfo['opt']['callback']:' No callback '; ?>
-				</dd>
-
-				<dt>Imply:</dt>
-				<dd>
-				<?php echo $routeInfo['opt']['imply']==true?'True':'False'; ?>
-				</dd>
-
-				<dt>Cut:</dt>
-				<dd>
-				<?php echo $routeInfo['opt']['cut']==true?'True':'False'; ?>
-				</dd>
-
-				<dt>rpx:</dt>
-				<dd>
-				<?php echo _s($routeInfo['rxp']); ?>
-				</dd>
-			</dl>
+					<?php else: ?>
+						No ignores
+					<?php endif; ?>
+					</dd>
+	
+					<dt>Children:</dt>
+					<dd>
+					<?php if (count($routeInfo['opt']['childs']) != null ): ?>
+						<ul>
+						<?php foreach( $routeInfo['opt']['childs'] as $children ): ?>
+							<li><?php echo $children; ?></li>
+						<?php endforeach; ?>
+						</ul>
+					<?php else: ?>
+					No children
+					<?php endif; ?>
+					</dd>
+	
+					<dt>Callback:</dt>
+					<dd>
+					<?php echo !empty( $routeInfo['opt']['callback'] )?$routeInfo['opt']['callback']:' No callback '; ?>
+					</dd>
+	
+					<dt>Imply:</dt>
+					<dd>
+					<?php echo $routeInfo['opt']['imply']==true?'True':'False'; ?>
+					</dd>
+	
+					<dt>Cut:</dt>
+					<dd>
+					<?php echo $routeInfo['opt']['cut']==true?'True':'False'; ?>
+					</dd>
+	
+					<dt>rpx:</dt>
+					<dd>
+					<?php echo _s($routeInfo['rxp']); ?>
+					</dd>
+				</dl>
 			</div><!-- route -->
-		<?php endforeach; //routes ?>
+			<?php endforeach; //routes ?>
 		</div><!-- routing -->
 
 		<h2>Global Request Data</h2>
@@ -131,20 +126,22 @@ function _s($string) {
 		</div>
 
 		<h2>Actions</h2>
-		<div id="adtBlock_View" >
-		<?php foreach($template['actions'] as $action): ?>
+		<div id="section-actions" >
+			<?php foreach($template['actions'] as $action): ?>
 			<h3><?php echo $action['module']; ?>.<?php echo $action['name']; ?></h3>
-			View name: <?php echo $template['view']['view_name']; ?>
-			<br />
-			Output type: <a href="#"><?php echo $template['view']['output_type']; ?></a>
-			<?php if ( strcmp($template['view']['output_type'], $template['view']['default_output_type']) == 0 ): ?>
-			( default )
-			<?php endif; ?>
-			<br />
-			Has renderers: <?php echo $template['view']['has_renders']?'True':'False'; ?>
-			<br />
-			Default layout name: <?php echo $template['view']['default_layout_name']; ?>
-		<?php endforeach; ?>
+			<div>
+				View name: <?php echo $template['view']['view_name']; ?>
+				<br />
+				Output type: <a href="#"><?php echo $template['view']['output_type']; ?></a>
+				<?php if ( strcmp($template['view']['output_type'], $template['view']['default_output_type']) == 0 ): ?>
+				( default )
+				<?php endif; ?>
+				<br />
+				Has renderers: <?php echo $template['view']['has_renders']?'True':'False'; ?>
+				<br />
+				Default layout name: <?php echo $template['view']['default_layout_name']; ?>
+			</div>
+			<?php endforeach; ?>
 		</div>
 
 		<h2>FPF</h2>
