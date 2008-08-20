@@ -118,8 +118,8 @@ function _s($string) {
     </div><!-- routing -->
 
     <h2>Global Request Data</h2>
-    <div id="adtBlock_Request" >
-      <strong>Request parameters</strong>
+    <div id="section-globalrd" >
+      <h3>Request parameters</h3>
       <dl>
       <?php foreach( $template['request_data']['request_parameters'] as $parameter => $value ): ?>
         <dt><?php echo $parameter; ?></dt>
@@ -127,9 +127,7 @@ function _s($string) {
       <?php endforeach; ?>
       </dl>
 
-      <br /><br />
-
-      <strong>Cookies</strong>
+      <h3>Cookies</h3>
       <dl>
       <?php foreach( $template['request_data']['cookies'] as $parameter => $value ): ?>
         <dt><?php echo $parameter; ?></dt>
@@ -137,9 +135,7 @@ function _s($string) {
       <?php endforeach; ?>
       </dl>
 
-      <br /><br />
-
-      <strong>Headers</strong>
+      <h3>Headers</h3>
       <dl>
       <?php foreach( $template['request_data']['headers'] as $parameter => $value ): ?>
       <dt><?php echo $parameter; ?></dt>

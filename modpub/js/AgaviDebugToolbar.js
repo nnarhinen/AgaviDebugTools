@@ -15,5 +15,9 @@ window.addEvent("domready", function(){
   var atabs = new SimpleTabs('section-actions', {
     selector: 'h3'
   });
+  
+  var rdtabs = new SimpleTabs('section-globalrd', {
+    selector: 'h3'
+  });
 
 });
