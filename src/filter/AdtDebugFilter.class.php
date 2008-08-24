@@ -7,9 +7,8 @@
  * @copyright  Authors
  * @version    0.1
  */
-class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
+abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 {
-
 	protected $log = array();
 
 	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
@@ -22,8 +21,8 @@ class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		//log global (i.e. not per action) stuff
 		$this->log['routes']       = $this->getMatchedRoutes();
 		$this->log['request_data'] = array('request_parameters' => $this->getContext()->getRequest()->getRequestData()->getParameters(),
-					'cookies' => $this->getContext()->getRequest()->getRequestData()->getCookies(),
-					'headers' => $this->getContext()->getRequest()->getRequestData()->getHeaders() );
+					                             'cookies' => $this->getContext()->getRequest()->getRequestData()->getCookies(),
+					      											 'headers' => $this->getContext()->getRequest()->getRequestData()->getHeaders() );
 		$this->log['log']          = $this->getLogLines();
 		$this->log['database']     = $this->adtGetDatabase();
 		$this->log['tm']           = $this->getContext()->getTranslationManager();
@@ -39,6 +38,8 @@ class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		//now the action has been executed and we'll log what can be logged
 		$this->log($container);
 	}
+	
+	abstract protected function render(AgaviExecutionContainer $container);
 
 	protected function log(AgaviExecutionContainer $container)
 	{
@@ -60,33 +61,31 @@ class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 	 */
 	private function getMatchedRoutes() {
 		# Array with information about matched routes, name of route is an index of array
-		$matchedRoutesInformation = array();
+		$result = array();
 		# Matched routes
 		$matchedRoutes = $this->getContext()->getRequest()->getAttribute('matched_routes', 'org.agavi.routing');
 
 		foreach( $matchedRoutes as $matchedRoute ) {
-			$matchedRoutesInformation[$matchedRoute] = $this->getContext()->getRouting()->getRoute($matchedRoute);
+			$result[$matchedRoute] = $this->getContext()->getRouting()->getRoute($matchedRoute);
 		}
 
-		return $matchedRoutesInformation;
+		return $result;
 	}
 
 	/**
 	 * Get informations about database
 	 *
 	 * @since 0.1
-	 * @todo
-	 * Integration with Propel logger ( http://propel.phpdb.org/trac/wiki/Users/Documentation/1.3/ConfigureLogging )
 	 */
 	private function adtGetDatabase() {
-		$database = array();
+		$result = array();
 		if ( !AgaviConfig::get('core.use_database') ) {
-			return $database;
+			return $result;
 		}
 
-		$database['class_name'] = get_class($this->container->getContext()->getDatabaseManager()->getDatabase());
+		$result['class_name'] = get_class($this->container->getContext()->getDatabaseManager()->getDatabase());
 
-		return $database;
+		return $result;
 	}
 
 	/**

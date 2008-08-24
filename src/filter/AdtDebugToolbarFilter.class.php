@@ -9,21 +9,14 @@
  */
 class AdtDebugToolbarFilter extends AdtDebugFilter implements AgaviIActionFilter
 {
-  /**
-   * @var AgaviExecutionContainer
-   */
-  private $container = null;
-
-  public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
-  {
-    $this->container = $container;
-
-    //AgaviDebugFilter does the actual logging
+  public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container) {
     parent::executeOnce($filterChain, $container);
+    
+    $this->render($container);
+  }
 
-
-    $filterChain->execute($container);
-
+  public function render(AgaviExecutionContainer $container)
+  {
     // Check if we can inject AgaviDebugToolbar to response
     // and if output type is one of our defined output types
     if ( !$container->getResponse()->isContentMutable() ||
