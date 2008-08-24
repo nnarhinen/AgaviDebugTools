@@ -60,5 +60,11 @@
       <setting name="debug">true</setting>
     </settings>
   </configuration>
+  
+  <configuration environment="production.*">
+    <settings>
+      <setting name="debug">false</setting>
+    </settings>
+  </configuration>
 
 </configurations>

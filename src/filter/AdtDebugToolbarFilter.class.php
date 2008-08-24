@@ -24,7 +24,7 @@ class AdtDebugToolbarFilter extends AdtDebugFilter implements AgaviIActionFilter
     !in_array($container->getResponse()->getOutputType()->getName(), $this->getParameter('output_types')) ) ) {
       return;
     }
-
+    
     // Render the toolbar
     $template = $this->log;
 

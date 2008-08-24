@@ -10,7 +10,20 @@
 abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 {
 	protected $log = array();
+	
+	/**
+	 * @var array
+	 */
+	private $configFiles = array();
 
+	public function __construct() {
+	  # Read config files
+	  $agaviConfigParser = new AgaviXmlConfigParser();
+	  
+	  # settings.xml
+	  $this->configFiles['settings'] = $agaviConfigParser->load( AgaviConfig::get('core.config_dir').'/settings.xml' );
+	}
+	
 	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
 	{
 		$this->context->getLoggerManager()->log(__CLASS__.' executeOnce', 'debug');
@@ -26,6 +39,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		$this->log['log']          = $this->getLogLines();
 		$this->log['database']     = $this->adtGetDatabase();
 		$this->log['tm']           = $this->getContext()->getTranslationManager();
+		$this->log['environments'] = $this->getAvailableEnvironments();
 	}
 
 	public function execute(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
@@ -37,6 +51,8 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 
 		//now the action has been executed and we'll log what can be logged
 		$this->log($container);
+
+		$this->getAvailableEnvironments();
 	}
 	
 	abstract protected function render(AgaviExecutionContainer $container);
@@ -113,7 +129,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		return $this->context->getRequest()->getAttribute('log', 'debugtoolbar', array());
 	}
 	
-	public function getValidationInfo(AgaviExecutionContainer $container)
+	private function getValidationInfo(AgaviExecutionContainer $container)
 	{
 		$vm = $container->getValidationManager();
 		$result = array();
@@ -128,6 +144,28 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		$result['incidents'] = $vm->getIncidents();
 		
 		return $result;
+	}
+	
+	/**
+	 * Get list of available environments
+	 * 
+	 * @author Daniel Ancuta
+	 * @return 
+	 * @since 0.1
+	 */
+	private function getAvailableEnvironments() {
+	  $result = array();
+	  $xpath = new DOMXPath($this->configFiles['settings']);
+	  $xpath->registerNamespace('agavi', 'http://agavi.org/agavi/1.0/config');
+	  $query = "//agavi:configurations/agavi:configuration/@environment";
+	  
+	  $nodes = $xpath->query($query);
+
+	  foreach( $nodes as $element ) {
+	    $result[] = $element->nodeValue;
+	  }
+	 
+	  return $result;
 	}
 
 }

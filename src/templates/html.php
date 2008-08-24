@@ -219,6 +219,13 @@ function _s($string) {
 		<h2>Environment</h2>
 		<div>
 			Environment: <?php echo AgaviConfig::get('core.environment'); ?>
+			
+			<h3>Available environments:</h3>
+			<ul>
+			<?php foreach( $template['environments'] as $environment): ?>
+				<li><?php echo $environment; ?></li>
+			<?php endforeach; ?>
+			</ul>
 
 			<h3>Defaults</h3>
 			<div>
