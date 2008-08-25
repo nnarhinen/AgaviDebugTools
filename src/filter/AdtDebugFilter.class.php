@@ -157,14 +157,39 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 	  $result = array();
 	  $xpath = new DOMXPath($this->configFiles['settings']);
 	  $xpath->registerNamespace('agavi', 'http://agavi.org/agavi/1.0/config');
-	  $query = "//agavi:configurations/agavi:configuration/@environment";
+	  $query = "//agavi:configurations/agavi:configuration/@environment/..";
 	  
 	  $nodes = $xpath->query($query);
 
-	  foreach( $nodes as $element ) {
-	    $result[] = $element->nodeValue;
+	  foreach( $nodes as $node ) {
+	    $result[$node->getAttribute('environment')] = array();
+	    
+	    # System actions
+	    foreach( $node->getElementsByTagName('system_actions') as $oneSystemAction ) {
+	      foreach( $oneSystemAction->getElementsByTagName('system_action') as $systemAction ) {
+	        $result[$node->getAttribute('environment')]['system_actions'][$systemAction->getAttribute('name')] = 
+	        array('module' => $systemAction->getElementsByTagName('module')->item(0)->nodeValue, 
+	              'action' => $systemAction->getElementsByTagName('action')->item(0)->nodeValue);
+
+	      }
+	    }
+	    
+	    # Settings
+	    foreach( $node->getElementsByTagName('settings') as $oneSetting ) {
+	      foreach( $oneSetting->getElementsByTagName('setting') as $setting ) {
+	        $result[$node->getAttribute('environment')]['settings'][$setting->getAttribute('name')] = $setting->nodeValue;
+	      }
+	    }
+	    
+	    # Exception templates
+	    foreach( $node->getElementsByTagName('exception_templates') as $oneExceptionTemplate ) {
+	      foreach( $oneExceptionTemplate->getElementsByTagName('exception_template') as $execeptionTemplate ) {
+	        $result[$node->getAttribute('environment')]['exception_templates'][] = array('context'  => $execeptionTemplate->getAttribute('context'),
+	                                                                                     'template' => $execeptionTemplate->nodeValue);
+	      }
+	    }
 	  }
-	 
+	  
 	  return $result;
 	}
 

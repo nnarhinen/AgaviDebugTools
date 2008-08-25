@@ -20,4 +20,7 @@ window.addEvent("domready", function(){
     selector: 'h3'
   });
 
+	var environmentsTabs = new SimpleTabs('environments', {
+		selector: 'h3'
+	});
 });

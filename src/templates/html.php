@@ -220,57 +220,46 @@ function _s($string) {
 		<div>
 			Environment: <?php echo AgaviConfig::get('core.environment'); ?>
 			
-			<h3>Available environments:</h3>
-			<ul>
-			<?php foreach( $template['environments'] as $environment): ?>
-				<li><?php echo $environment; ?></li>
+			<div id="environments">
+			<?php foreach( $template['environments'] as $name => $environment): ?>
+				<h3><?php echo $name; ?></h3>
+				<div>
+					<?php if ( isset($environment['system_actions']) ): ?>
+					<h4>Defaults</h4>
+					<dl>
+					<?php foreach( $environment['system_actions'] as $name => $value ): ?>
+						<dt><?php echo $name; ?></dt>
+						<dd>
+							Module: <?php echo $value['module']; ?>
+							<br />
+							Action: <?php echo $value['action']; ?>
+						</dd>
+					<?php endforeach; ?>
+					</dl>
+				  <?php endif; ?>
+				  
+				  <?php if ( isset($environment['settings']) ): ?>
+				  <h4>Settings</h4>
+				  <ul>
+  			  	<?php foreach( $environment['settings'] as $name => $value ): ?>
+  			  	<li><?php echo $name; ?>: <?php echo $value; ?></li>
+  			  	<?php endforeach; ?>
+			  	</ul>
+				  <?php endif; ?>
+				  
+				  <?php if ( isset($environment['exception_templates']) ): ?>
+				  <h4>Exception templates</h4>
+				  <ul>
+				  	<?php foreach( $environment['exception_templates'] as $exception ): ?>
+				  	<li>Context: <?php echo !empty($exception['context'])?$exception['context']:'default'; ?> <?php echo $exception['template']; ?></li>
+				  	<?php endforeach; ?>
+				  </ul>
+				  <?php endif; ?>
+				
+				</div>
 			<?php endforeach; ?>
-			</ul>
-
-			<h3>Defaults</h3>
-			<div>
-				<dl>
-					<dt>Module and action</dt>
-					<dd>
-						Module: <?php echo AgaviConfig::get('actions.default_module'); ?>
-						<br />
-						Action: <?php echo AgaviConfig::get('actions.default_action'); ?>
-					</dd>
-
-					<dt>404</dt>
-					<dd>
-						Module: <?php echo AgaviConfig::get('actions.error_404_module'); ?>
-						<br />
-						Action: <?php echo AgaviConfig::get('actions.error_404_action'); ?>
-					</dd>
-
-					<dt>Unavailable</dt>
-					<dd>
-						Module: <?php echo AgaviConfig::get('actions.module_disabled_module'); ?>
-						<br />
-						Action: <?php echo AgaviConfig::get('actions.module_disabled_action'); ?>
-					</dd>
-
-					<dt>Disabled</dt>
-					<dd>
-						Module: <?php echo AgaviConfig::get('actions.unavailable_module'); ?>
-						<br />
-						Action: <?php echo AgaviConfig::get('actions.unavailable_action'); ?>
-					</dd>
-					<dt>Secure</dt>
-					<dd>
-						Module: <?php echo AgaviConfig::get('actions.secure_module'); ?>
-						<br />
-						Action: <?php echo AgaviConfig::get('actions.secure_action'); ?>
-					</dd>
-					<dt>Login</dt>
-					<dd>
-						Module: <?php echo AgaviConfig::get('actions.login_module'); ?>
-						<br />
-						Action: <?php echo AgaviConfig::get('actions.login_action'); ?>
-					</dd>
-				</dl>
 			</div>
+
 
 			<h3>Locations</h3>
 			<div>
