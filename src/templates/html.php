@@ -1,10 +1,3 @@
-<?php
-//define some helper methods
-
-function _s($string) {
-	return htmlspecialchars($string);
-}
-?>
 
 <div id="adt-container">
 	<h1>Debug Log</h1>
@@ -110,7 +103,7 @@ function _s($string) {
 
 					<dt>rpx:</dt>
 					<dd>
-					<?php echo _s($routeInfo['rxp']); ?>
+					<?php echo htmlspecialchars($routeInfo['rxp']); ?>
 					</dd>
 				</dl>
 			</div><!-- route -->
@@ -123,7 +116,7 @@ function _s($string) {
 			<dl>
 			<?php foreach( $template['request_data']['request_parameters'] as $parameter => $value ): ?>
 				<dt><?php echo $parameter; ?></dt>
-				<dd><pre><?php var_dump($value); ?></pre></dd>
+				<dd><pre><?php htmlspecialchars(var_dump($value)); ?></pre></dd>
 			<?php endforeach; ?>
 			</dl>
 
@@ -131,7 +124,7 @@ function _s($string) {
 			<dl>
 			<?php foreach( $template['request_data']['cookies'] as $parameter => $value ): ?>
 				<dt><?php echo $parameter; ?></dt>
-				<dd><pre><?php var_dump($value); ?></pre></dd>
+				<dd><pre><?php htmlspecialchars(var_dump($value)); ?></pre></dd>
 			<?php endforeach; ?>
 			</dl>
 
@@ -139,7 +132,7 @@ function _s($string) {
 			<dl>
 			<?php foreach( $template['request_data']['headers'] as $parameter => $value ): ?>
 			<dt><?php echo $parameter; ?></dt>
-			<dd><?php echo $value; ?></dd>
+			<dd><?php echo htmlspecialchars($value); ?></dd>
 			<?php endforeach; ?>
 			</dl>
 		</div>
@@ -173,6 +166,32 @@ function _s($string) {
 						<?php endforeach; ?>
 						</div>
 					<?php endif; ?>
+				</div>
+				<h4>Request Data (from execution container)</h4>
+				<div>
+					<h5>Request parameters</h5>
+					<dl>
+					<?php foreach( $action['request_data']['request_parameters'] as $parameter => $value ): ?>
+						<dt><?php echo $parameter; ?></dt>
+						<dd><pre><?php htmlspecialchars(var_dump($value)); ?></pre></dd>
+					<?php endforeach; ?>
+					</dl>
+		
+					<h5>Cookies</h5>
+					<dl>
+					<?php foreach( $action['request_data']['cookies'] as $parameter => $value ): ?>
+						<dt><?php echo $parameter; ?></dt>
+						<dd><pre><?php htmlspecialchars(var_dump($value)); ?></pre></dd>
+					<?php endforeach; ?>
+					</dl>
+		
+					<h5>Headers</h5>
+					<dl>
+					<?php foreach( $action['request_data']['headers'] as $parameter => $value ): ?>
+					<dt><?php echo $parameter; ?></dt>
+					<dd><?php echo htmlspecialchars($value); ?></dd>
+					<?php endforeach; ?>
+					</dl>
 				</div>
 				
 			</div>
@@ -236,25 +255,25 @@ function _s($string) {
 						</dd>
 					<?php endforeach; ?>
 					</dl>
-				  <?php endif; ?>
-				  
-				  <?php if ( isset($environment['settings']) ): ?>
-				  <h4>Settings</h4>
-				  <ul>
-  			  	<?php foreach( $environment['settings'] as $name => $value ): ?>
-  			  	<li><?php echo $name; ?>: <?php echo $value; ?></li>
-  			  	<?php endforeach; ?>
-			  	</ul>
-				  <?php endif; ?>
-				  
-				  <?php if ( isset($environment['exception_templates']) ): ?>
-				  <h4>Exception templates</h4>
-				  <ul>
-				  	<?php foreach( $environment['exception_templates'] as $exception ): ?>
-				  	<li>Context: <?php echo !empty($exception['context'])?$exception['context']:'default'; ?> <?php echo $exception['template']; ?></li>
-				  	<?php endforeach; ?>
-				  </ul>
-				  <?php endif; ?>
+					<?php endif; ?>
+					
+					<?php if ( isset($environment['settings']) ): ?>
+					<h4>Settings</h4>
+					<ul>
+						<?php foreach( $environment['settings'] as $name => $value ): ?>
+						<li><?php echo $name; ?>: <?php echo $value; ?></li>
+						<?php endforeach; ?>
+					</ul>
+					<?php endif; ?>
+					
+					<?php if ( isset($environment['exception_templates']) ): ?>
+					<h4>Exception templates</h4>
+					<ul>
+						<?php foreach( $environment['exception_templates'] as $exception ): ?>
+						<li>Context: <?php echo !empty($exception['context'])?$exception['context']:'default'; ?> <?php echo $exception['template']; ?></li>
+						<?php endforeach; ?>
+					</ul>
+					<?php endif; ?>
 				
 				</div>
 			<?php endforeach; ?>
@@ -299,7 +318,7 @@ function _s($string) {
 		<h2>Log</h2>
 		<div>
 			<?php foreach($template['log'] as $logLine): ?>
-				<?php echo $logLine['timestamp']->format('c') ?>: <?php echo _s($logLine['message']); ?><br/>
+				<?php echo $logLine['timestamp']->format('c') ?>: <?php echo htmlspecialchars($logLine['message']); ?><br/>
 			<?php endforeach; ?>
 		</div>
 	</div><!-- sections / tabs -->
