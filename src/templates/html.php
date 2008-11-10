@@ -2,19 +2,19 @@
 <div id="adt-container">
 	<h1>ADT Debug Toolbar</h1>
 
-	<div id="sections">
+	<div id="adt-sections">
 		<h2>Matched Routes</h2>
-		<div id="section-routing">
+		<div id="adt-section-routing">
 			<?php include('html-routing.php'); ?>			
 		</div><!-- routing -->
 
 		<h2>Global Request Data</h2>
-		<div id="section-globalrd" >
+		<div id="adt-section-globalrd" >
 			<?php include('html-globalrd.php'); ?>
 		</div>
 
 		<h2>Actions</h2>
-		<div id="section-actions" >
+		<div id="adt-section-actions" >
 			<?php include('html-actions.php'); ?>
 		</div>
 
@@ -57,23 +57,26 @@
 
 		<h2>Environment</h2>
 		<div>
-			Environment: <?php echo AgaviConfig::get('core.environment'); ?>
+			<dl>
+				<dt>Current environment</dt>
+				<dd><?php echo AgaviConfig::get('core.environment'); ?></dd>
+			</dl>
 			
-			<div id="environments">
+			<div id="adt-section-environments">
 			<?php foreach( $template['environments'] as $name => $environment): ?>
 				<h3><?php echo $name; ?></h3>
 				<div>
 					<?php if ( isset($environment['system_actions']) ): ?>
-					<h4>Defaults</h4>
+					<h4>System Actions</h4>
 					<dl>
-					<?php foreach( $environment['system_actions'] as $name => $value ): ?>
+						<?php foreach( $environment['system_actions'] as $name => $value ): ?>
 						<dt><?php echo $name; ?></dt>
 						<dd>
 							Module: <?php echo $value['module']; ?>
 							<br />
 							Action: <?php echo $value['action']; ?>
 						</dd>
-					<?php endforeach; ?>
+						<?php endforeach; ?>
 					</dl>
 					<?php endif; ?>
 					
@@ -100,27 +103,16 @@
 			</div>
 
 
-			<h3>Locations</h3>
+			<h3>Configuration Directives</h3>
 			<div>
-				<dl>
-					<dt>App:</dt>
-					<dd><?php echo AgaviConfig::get('core.app_dir'); ?></dd>
-
-					<dt>Cache:</dt>
-					<dd><?php echo AgaviConfig::get('core.cache_dir'); ?></dd>
-
-					<dt>Config:</dt>
-					<dd><?php echo AgaviConfig::get('core.config_dir'); ?></dd>
-
-					<dt>Lib:</dt>
-					<dd><?php echo AgaviConfig::get('core.lib_dir'); ?></dd>
-
-					<dt>Modules:</dt>
-					<dd><?php echo AgaviConfig::get('core.module_dir'); ?></dd>
-
-					<dt>Templates:</dt>
-					<dd><?php echo AgaviConfig::get('core.template_dir'); ?></dd>
-				</dl>
+				<table>
+				<?php $conf = AgaviConfig::toArray(); ksort($conf); foreach($conf as $name => $value): ?>
+				<tr>
+					<td><pre><?php echo htmlspecialchars($name); ?></pre></td>
+					<td><pre><?php echo htmlspecialchars(var_export($value, true)); ?></pre></td>
+				</tr>
+				<?php endforeach; ?>
+				</table>
 			</div>
 
 			<h3>Agavi</h3>
@@ -136,10 +128,15 @@
 		</div>
 
 		<h2>Log</h2>
+		
 		<div>
-			<?php foreach($template['log'] as $logLine): ?>
+			<p>
+			<?php if($template['log']): foreach($template['log'] as $logLine): ?>
 				<?php echo $logLine['timestamp']->format('c') ?>: <?php echo htmlspecialchars($logLine['message']); ?><br/>
-			<?php endforeach; ?>
+			<?php endforeach; else: ?>
+				No log lines
+			<?php endif;?>
+			</p>
 		</div>
 	</div><!-- sections / tabs -->
 </div>

@@ -152,20 +152,23 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		$doc = new AgaviXmlConfigDomDocument();
 
 		$doc->load(AgaviConfig::get('core.config_dir').'/settings.xml');
+
+		//TODO: XPath is broken, fix it
 		
 		$xpath = new DOMXPath($doc);
 		$xpath->registerNamespace('agavi', 'http://agavi.org/agavi/1.0/config');
-		$query = "//agavi:configurations/agavi:configuration/@environment/..";
+		$query = "//agavi:configurations/agavi:configuration/..";
 		
 		$nodes = $xpath->query($query);
 
 		foreach( $nodes as $node ) {
-			$result[$node->getAttribute('environment')] = array();
+			$env = $node->hasAttribute('environment') ? $node->getAttribute('environment') : '(default)'; 
+			$result[$env] = array();
 
 			// System actions
 			foreach( $node->getElementsByTagName('system_actions') as $oneSystemAction ) {
 				foreach( $oneSystemAction->getElementsByTagName('system_action') as $systemAction ) {
-					$result[$node->getAttribute('environment')]['system_actions'][$systemAction->getAttribute('name')] = 
+					$result[$env]['system_actions'][$systemAction->getAttribute('name')] = 
 					array('module' => $systemAction->getElementsByTagName('module')->item(0)->nodeValue, 
 								'action' => $systemAction->getElementsByTagName('action')->item(0)->nodeValue);
 
@@ -175,14 +178,14 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 			// Settings
 			foreach( $node->getElementsByTagName('settings') as $oneSetting ) {
 				foreach( $oneSetting->getElementsByTagName('setting') as $setting ) {
-					$result[$node->getAttribute('environment')]['settings'][$setting->getAttribute('name')] = $setting->nodeValue;
+					$result[$env]['settings'][$setting->getAttribute('name')] = $setting->nodeValue;
 				}
 			}
 
 			// Exception templates
 			foreach( $node->getElementsByTagName('exception_templates') as $oneExceptionTemplate ) {
 				foreach( $oneExceptionTemplate->getElementsByTagName('exception_template') as $execeptionTemplate ) {
-					$result[$node->getAttribute('environment')]['exception_templates'][] = array('context' => $execeptionTemplate->getAttribute('context'),
+					$result[$env]['exception_templates'][] = array('context' => $execeptionTemplate->getAttribute('context'),
 						'template' => $execeptionTemplate->nodeValue);
 				}
 			}
