@@ -1,0 +1,34 @@
+1. checkout http://svn.projectbin.org/adt/trunk/src/ into myproject/libs/adt/
+2. chekcout http://svn.projectbin.org/adt/trunk/modpub/ into myproject/pub/modpub/adt/
+3. autoload.xml
+
+	<autoload name="AdtDebugFilter">%core.app_dir%/../libs/adt/filter/AdtDebugFilter.class.php</autoload>
+	<autoload name="AdtDebugToolbarFilter">%core.app_dir%/../libs/adt/filter/AdtDebugToolbarFilter.class.php</autoload>
+	<!-- optional if you want to use logging into the Log tab in the toolbar -->
+	<autoload name="AdtRequestLogAppender">%core.app_dir%/../libs/adt/logging/AdtRequestLogAppender.class.php</autoload>
+
+4. action_filters.xml
+
+	<configuration environment="development.*">
+		<filter name="AdtDebugToolbarFilter" class="AdtDebugToolbarFilter">
+			<!-- for what output types this filter is ran -->
+			<parameter name="output_types">
+				<parameter>html</parameter>
+			</parameter>
+
+			<!-- your modpub directory (relative to base href) -->
+			<parameter name="modpub">modpub</parameter>
+			
+			<parameter name="template">templates/html.php</parameter>
+	
+			<!-- for the HTML template, relative to parameter 'modpub' -->
+			<parameter name="css">
+				<parameter>css/adt.css</parameter>
+			</parameter>
+			<parameter name="js">
+				<parameter>js/mootools-1.2.js</parameter>
+				<parameter>js/SimpleTabs.js</parameter>
+				<parameter>js/AgaviDebugToolbar.js</parameter>
+			</parameter>
+		</filter>
+	</configuration>
