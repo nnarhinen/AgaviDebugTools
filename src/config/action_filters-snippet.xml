@@ -22,4 +22,8 @@
 			<parameter>js/AgaviDebugToolbar.js</parameter>
 		</parameter>
 	</filter>
+	
+	<!-- Requires FirePHP -->
+	<!-- filter name="AdtDebugFirePhpFilter" class="AdtDebugFirePhpFilter" /-->
+
 </filters>
