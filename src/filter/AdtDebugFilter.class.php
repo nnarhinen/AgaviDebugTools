@@ -1,41 +1,40 @@
 <?php
+
 /**
  * AgaviDebugFilter gathers information for debug purposes
  *
- * @author		 Daniel Ancuta <daniel.ancuta@whisnet.pl>
- * @author		 Veikko Mäkinen <veikko@veikko.fi>
- * @copyright	Authors
- * @version		0.1
+ * @author     Daniel Ancuta <daniel.ancuta@whisnet.pl>
+ * @author     Veikko Mäkinen <veikko@veikko.fi>
+ * @copyright  Authors
+ * @version    $Id$
  */
 abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 {
 	protected $log = array();
 
 	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
-	{
-		$this->context->getLoggerManager()->log(__CLASS__.' executeOnce', 'debug');
-		
+	{		
 		//procede to execute	
 		$this->execute($filterChain, $container);
 
 		//log global (i.e. not per action) stuff
-		$this->log['routes']			 = $this->getMatchedRoutes();
+		$this->log['routes'] = $this->getMatchedRoutes();
 		$this->log['request_data'] = array(
-										'request_parameters' => $this->getContext()->getRequest()->getRequestData()->getParameters(),
-										'cookies' => $this->getContext()->getRequest()->getRequestData()->getCookies(),
-										'headers' => $this->getContext()->getRequest()->getRequestData()->getHeaders() 
-									);
-		$this->log['log']					= $this->getLogLines();
-		$this->log['database']		 = $this->getDatabase();
-		$this->log['tm']					 = $this->getContext()->getTranslationManager();
+			'request_parameters' => $this->getContext()->getRequest()->getRequestData()->getParameters(),
+			'cookies' => $this->getContext()->getRequest()->getRequestData()->getCookies(),
+			'headers' => $this->getContext()->getRequest()->getRequestData()->getHeaders() 
+		);
+		$this->log['log'] = $this->getLogLines();
+		$this->log['database'] = $this->getDatabase();
+		$this->log['tm'] = $this->getContext()->getTranslationManager();
 		$this->log['environments'] = $this->getAvailableEnvironments();
+		
+		$this->render($container);
 	}
 
 	public function execute(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
 	{
-		$this->context->getLoggerManager()->log(__CLASS__.' execute', 'debug');
-
-		//procede
+		//procede with execution
 		$filterChain->execute($container);
 
 		//now the action has been executed and we'll log what can be logged
@@ -48,28 +47,27 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 	{
 		//keep this simple for now
 		$this->log['actions'][] = array (
-			'name'				 => $container->getActionName(),
-			'module'			 => $container->getModuleName(),
+			'name' => $container->getActionName(),
+			'module' => $container->getModuleName(),
 			'request_data' => array(
-								'request_parameters' => $container->getRequestData()->getParameters(),
-								'cookies' => $container->getRequestData()->getCookies(),
-								'headers' => $container->getRequestData()->getHeaders(),
-							),
-			'validation'	 => $this->getValidationInfo($container),
-			'view'				 => $this->getViewInfo($container),
+				'request_parameters' => $container->getRequestData()->getParameters(),
+				'cookies' => $container->getRequestData()->getCookies(),
+				'headers' => $container->getRequestData()->getHeaders(),
+			),
+			'validation' => $this->getValidationInfo($container),
+			'view' => $this->getViewInfo($container),
 		);
 	}
 
 	/**
 	 * Get array with matched routes
 	 *
-	 * @return array
-	 * @since 0.1
+	 * @return     array
+	 * @since      0.1
 	 */
-	private function getMatchedRoutes() {
-		# Array with information about matched routes, name of route is an index of array
+	private function getMatchedRoutes() 
+	{
 		$result = array();
-		# Matched routes
 		$matchedRoutes = $this->getContext()->getRequest()->getAttribute('matched_routes', 'org.agavi.routing');
 
 		foreach( $matchedRoutes as $matchedRoute ) {
@@ -80,7 +78,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 	}
 
 	/**
-	 * Get informations about database
+	 * Get information about database
 	 *
 	 * @since 0.1
 	 */
@@ -90,7 +88,11 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		if ( !AgaviConfig::get('core.use_database') ) {
 			return $result;
 		}
-
+		
+		//
+		// THIS IS DEFINITELY NOT GOOD ENOUGH
+		// we'll probably just have to parse databases.xml or something
+		//
 		$result['class_name'] = get_class($this->context->getDatabaseManager()->getDatabase());
 
 		return $result;
@@ -102,15 +104,16 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 	 * @return array
 	 * @since 0.1
 	 */
-	private function getViewInfo(AgaviExecutionContainer $container) {
+	private function getViewInfo(AgaviExecutionContainer $container)
+	{
 		$result = array();
 
-		$outputType = $this->getContext()->getController()->getOutputType( $container->getOutputType()->getName() );
+		$outputType = $this->getContext()->getController()->getOutputType($container->getOutputType()->getName());
 
-		$result['view_name']					 = $container->getViewName();
-		$result['output_type']				 = $container->getOutputType()->getName();
+		$result['view_name'] = $container->getViewName();
+		$result['output_type'] = $container->getOutputType()->getName();
 		$result['default_output_type'] = $this->getContext()->getController()->getOutputType()->getName();
-		$result['has_renders']				 = $outputType->hasRenderers();
+		$result['has_renders'] = $outputType->hasRenderers();
 		$result['default_layout_name'] = $outputType->getDefaultLayoutName();
 
 		return $result;
