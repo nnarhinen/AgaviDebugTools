@@ -11,9 +11,43 @@
 abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 {
 	protected $log = array();
+	
+	protected $options = array();
+	
+	public function initialize(AgaviContext $context, array $parameters = array())
+	{
+		parent::initialize($context, $parameters);
+		
+		$this->options = array_merge(
+			//default options
+			array(
+				'sections' => array(
+					'routing',
+					'globalrd',
+					'actions',
+					'fpf',
+					'translation',
+					'environment',
+					'log'
+				),
+			),
+			$this->getParameters()
+		);
+	}
+
+	protected function updateOptions()
+	{
+		$req = $this->context->getRequest();
+		$runtimeOptions = $req->hasAttributeNamespace('adt.debugfilter.options') ?
+			$req->getAttributeNamespace('adt.debugfilter.options') : array();
+		$this->options = array_merge(
+			$this->options,
+			$runtimeOptions
+		);
+	}
 
 	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
-	{		
+	{
 		//procede to execute	
 		$this->execute($filterChain, $container);
 
@@ -36,9 +70,13 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 	{
 		//procede with execution
 		$filterChain->execute($container);
+		
+		$this->updateOptions();
 
 		//now the action has been executed and we'll log what can be logged
-		$this->log($container);
+		if(in_array('actions', $this->options['sections'])) {
+			$this->log($container);
+		}
 	}
 	
 	abstract protected function render(AgaviExecutionContainer $container);
