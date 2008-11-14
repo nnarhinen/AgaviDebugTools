@@ -98,8 +98,14 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter implements AgaviIActionFilter
 			$firephp->groupEnd(); //req data
 			
 			$firephp->groupEnd(); //action
+		} // actions
+		
+		$firephp->group('Log');
+		foreach($template['log'] as $logLine) {
+			$firephp->log($logLine['microtime'] . ': ' .$logLine['message']);
 		}
-		$firephp->groupEnd();
+		$firephp->groupEnd(); // log
+		
 	}
 }
 ?>
