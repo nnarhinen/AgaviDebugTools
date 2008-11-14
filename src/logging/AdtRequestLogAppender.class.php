@@ -21,6 +21,7 @@ class AdtRequestLogAppender extends AgaviLoggerAppender
 			'log',
 			array(
 				'timestamp' => new DateTime(), 
+				'microtime' => microtime(true), 
 				'message' => $this->getLayout()->format($message)
 			),
 			'adt.debugtoolbar'

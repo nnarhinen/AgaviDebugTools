@@ -129,14 +129,19 @@
 
 		<h2>Log</h2>
 		
-		<div>
-			<p>
-			<?php if($template['log']): foreach($template['log'] as $logLine): ?>
-				<?php echo $logLine['timestamp']->format('c') ?>: <?php echo htmlspecialchars($logLine['message']); ?><br/>
-			<?php endforeach; else: ?>
-				No log lines
+		<div id="adt-section-log">
+			<?php if($template['log']): ?>
+				<table cellpadding="5" cellspacing="0">			
+				<?php foreach($template['log'] as $logLine): ?>
+					<tr>
+						<td class="timestamp"><?php echo $logLine['microtime']; ?></td>
+						<td><?php echo htmlspecialchars($logLine['message']); ?></td>
+					</tr>
+				<?php endforeach; ?>
+				</table>
+			<?php else: ?>
+				<p>No log lines</p>
 			<?php endif;?>
-			</p>
 		</div>
 	</div><!-- sections / tabs -->
 </div>
