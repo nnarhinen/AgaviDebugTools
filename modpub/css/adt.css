@@ -1,5 +1,6 @@
 
 #adt-container {
+	margin: 2em;
 	background: #efefef; 
 	font-size: 12px;
 }
@@ -58,6 +59,14 @@
 
 #adt-container pre {
 	margin: 0;	
+}
+
+#adt-section-log table {
+	font-family: "Courier New" Courier monospace;
+}
+
+#adt-section-log td.timestamp {
+	border-right: 1px solid grey;
 }
 
 
