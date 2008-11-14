@@ -159,7 +159,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 
 	public function getLogLines()
 	{
-		return $this->context->getRequest()->getAttribute('log', 'debugtoolbar', array());
+		return $this->context->getRequest()->getAttribute('log', 'adt.debugtoolbar', array());
 	}
 	
 	private function getValidationInfo(AgaviExecutionContainer $container)
