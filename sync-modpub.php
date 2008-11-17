@@ -4,7 +4,9 @@
  *
  * @author    Daniel Ancuta <daniel.ancuta@whisnet.pl>
  * @author    Veikko Mäkinen <veikko@veikko.fi>
+ * 
  * @copyright Authors
+ * 
  * @version   0.1
  */
 
@@ -34,7 +36,7 @@ for(; $iterator->valid(); $iterator->next()) {
 }
 
 # Create our ADT dir in modpub :)
-mkdir("./demo/pub/modpub/Adt");
+mkdir($demoModpubPath.'/AgaviDebugToolbar');
 
 
 # Copy and paste all needed files from dev to demo
@@ -48,9 +50,9 @@ for(; $iterator->valid(); $iterator->next()) {
   }
 
   if ( $rdi->isDir() ) {
-    mkdir('./demo/pub/modpub/Adt/'.$rdi->getSubPathname());
+    mkdir($demoModpubPath.'/AgaviDebugToolbar/'.$rdi->getSubPathname());
   } else {
-    copy( $rdi->getPathname(), './demo/pub/modpub/Adt/'.$rdi->getSubPathname() );
+    copy( $rdi->getPathname(), $demoModpubPath.'/AgaviDebugToolbar/'.$rdi->getSubPathname() );
   }
 }
 ?>
