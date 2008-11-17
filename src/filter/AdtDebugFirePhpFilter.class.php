@@ -39,12 +39,13 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter implements AgaviIActionFilter
 			$firephp->groupEnd();
 		$firephp->groupEnd();
 
-//		Not really needed with FireBug
-//		$firephp->group('Headers');
-//		foreach($template['request_data']['headers'] as $parameter => $value ) {
-//			$firephp->log($parameter.':'.var_export($value, true));
-//		}
-//		$firephp->groupEnd();
+		// Not really needed with FireBug but I'll add them anyway so that it's easy to compare 
+		// data before and after validation
+		$firephp->group('Headers');
+		foreach($template['request_data']['headers'] as $parameter => $value ) {
+			$firephp->log($parameter.':'.var_export($value, true));
+		}
+		$firephp->groupEnd();
 
 		$firephp->group('Actions');
 		
@@ -75,7 +76,7 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter implements AgaviIActionFilter
 
 			$firephp->group('Cookies');
 			if ($action['request_data']['cookies']) {
-				foreach( $action['request_data']['request_parameters'] as $parameter => $value ) {
+				foreach( $action['request_data']['cookies'] as $parameter => $value ) {
 					$firephp->log($parameter.': '.var_export($value, true));
 				}
 			}
@@ -85,8 +86,8 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter implements AgaviIActionFilter
 			$firephp->groupEnd(); //cookies
 
 			$firephp->group('Headers');
-			if ($action['request_data']['cookies']) {
-				foreach( $action['request_data']['request_parameters'] as $parameter => $value ) {
+			if ($action['request_data']['headers']) {
+				foreach( $action['request_data']['headers'] as $parameter => $value ) {
 					$firephp->log($parameter.': '.var_export($value, true));
 				}
 			}
