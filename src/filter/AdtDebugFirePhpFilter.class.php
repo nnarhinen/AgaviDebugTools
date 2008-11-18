@@ -67,9 +67,9 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter implements AgaviIActionFilter
 			$map = $action['validation']['incidents'];
 			if (count($map)) {
 				$table = array(array('Name', 'Severity', 'Fields'));
-				foreach($action['validation']['incidents'] as $incident) {
+				foreach($action['validation']['incidents'] as $incident) { /* @var $incident AgaviValidationIncident */
 					$table[] = array(
-						$incident->getValidator()->getName(),
+						$incident->getValidator() ? $incident->getValidator()->getName() : '(no validator)',
 						$action['validation']['severities'][$incident->getSeverity()],
 						implode(', ', $incident->getFields())
 					);
