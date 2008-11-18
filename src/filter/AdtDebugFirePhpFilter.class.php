@@ -2,9 +2,10 @@
 
 /**
  * AdtDebugFirePhpFilter renders AdtDebugFilter's log using
- * FirePHP 
+ * FirePHP
  *
  * @author     Veikko Mäkinen <veikko@veikko.fi>
+ * @author     Harald Kirschner <mail@digitarald.de>
  * @copyright  Authors
  * @version    $Id$
  */
@@ -15,98 +16,103 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter implements AgaviIActionFilter
 	{
 		$firephp = AdtFirePhp::getInstance(true);
 		$firephp->setContext($this->context);
+		$firephp->setOptions(array(
+			'includeLineNumbers' => false,
+			'maxObjectDepth' => 1
+		));
 		//$firephp->detectClientExtension()
-		
+
 		$template = $this->log;
-		
+
+		$unshift_key = create_function('$value, $key', 'return array($key, $value);');
+
 		$firephp->group('Matched Routes');
 		foreach($template['routes'] as $routeName => $routeInfo) {
 			$firephp->log($routeName);
 		}
 		$firephp->groupEnd();
 
-		$firephp->group('Global Request Data');
-			$firephp->group('Request Parameters');
-			foreach($template['request_data']['request_parameters'] as $parameter => $value ) {
-				$firephp->log($parameter.':'.var_export($value, true));
-			}
-			$firephp->groupEnd();
-			
-			$firephp->group('Cookies');
-			foreach($template['request_data']['cookies'] as $parameter => $value ) {
-				$firephp->log($parameter.':'.var_export($value, true));
-			}
-			$firephp->groupEnd();
-		$firephp->groupEnd();
-
-		// Not really needed with FireBug but I'll add them anyway so that it's easy to compare 
-		// data before and after validation
-		$firephp->group('Headers');
-		foreach($template['request_data']['headers'] as $parameter => $value ) {
-			$firephp->log($parameter.':'.var_export($value, true));
+		$firephp->group('Request Data');
+		$map = $template['request_data']['request_parameters'];
+		if (count($map)) {
+			$firephp->table(sprintf('Request Parameters (%s)', count($map)), array_merge(array(array('Name', 'Value')), array_map($unshift_key, $map, array_keys($map))));
+		} else {
+			$firephp->log('No Request Parameters');
 		}
-		$firephp->groupEnd();
+		$map = $template['request_data']['cookies'];
+		if (count($map)) {
+			$firephp->table(sprintf('Cookies (%s)', count($map)), array_merge(array(array('Name', 'Value')), array_map($unshift_key, $map, array_keys($map))));
+		} else {
+			$firephp->log('No Cookies');
+		}
+		$map = $template['request_data']['headers'];
+		if (count($map)) {
+			$firephp->table(sprintf('Headers (%s)', count($map)), array_merge(array(array('Name', 'Value')), array_map($unshift_key, $map, array_keys($map))));
+		} else {
+			$firephp->log('No Headers');
+		}
+		$firephp->groupEnd(); //req data
+
 
 		$firephp->group('Actions');
-		
+
 		foreach($template['actions'] as $action) {
 			$firephp->group($action['module'] .'.'.$action['name']);
-			$firephp->log('Has validation errors: ' . var_export($action['validation']['has_errors'], true));
-			if ($action['validation']['has_errors']) { 
-				$firephp->group('Validation Incidents');
+			if ($action['validation']['has_errors']) {
+				$firephp->error('Has Validation Errors');
+			} else {
+				$firephp->log('No Validation Errors');
+			}
+
+			$map = $action['validation']['incidents'];
+			if (count($map)) {
+				$table = array(array('Name', 'Severity', 'Fields'));
 				foreach($action['validation']['incidents'] as $incident) {
-					$firephp->log('Validator: '.$incident->getValidator()->getName());
-					$firephp->log('Severity:: '.$action['validation']['severities'][$incident->getSeverity()]);
-					$firephp->log('Fields: '.implode(', ', $incident->getFields()));
+					$table[] = array(
+						$incident->getValidator()->getName(),
+						$action['validation']['severities'][$incident->getSeverity()],
+						implode(', ', $incident->getFields())
+					);
 				}
-				$firephp->groupEnd(); // validation incidents
+				$firephp->table(sprintf('Validation Incidents (%s)', count($map)), $table);
+			} else {
+				$firephp->log('No Validation Incidents');
 			}
-			
+
 			$firephp->group('Request Data (from execution container)');
-			$firephp->group('Request Parameters');
+
 			if ($action['request_data']['request_parameters']) {
-				foreach( $action['request_data']['request_parameters'] as $parameter => $value ) {
-					$firephp->log($parameter.': '.var_export($value, true));
-				}
+				$map = $action['request_data']['request_parameters'];
+				$firephp->table(sprintf('Request Parameters (%s)', count($map)), array_merge(array(array('Name', 'Value')), array_map($unshift_key, $map, array_keys($map))));
+			} else {
+				$firephp->log('No Request Parameters');
 			}
-			else {
-				$firephp->log('-');
-			}
-			$firephp->groupEnd(); //params
 
-			$firephp->group('Cookies');
 			if ($action['request_data']['cookies']) {
-				foreach( $action['request_data']['cookies'] as $parameter => $value ) {
-					$firephp->log($parameter.': '.var_export($value, true));
-				}
+				$map = $action['request_data']['cookies'];
+				$firephp->table(sprintf('Cookies (%s)', count($map)), array_merge(array(array('Name', 'Value')), array_map($unshift_key, $map, array_keys($map))));
+			} else {
+				$firephp->log('No Cookies');
 			}
-			else {
-				$firephp->log('-');
-			}
-			$firephp->groupEnd(); //cookies
 
-			$firephp->group('Headers');
 			if ($action['request_data']['headers']) {
-				foreach( $action['request_data']['headers'] as $parameter => $value ) {
-					$firephp->log($parameter.': '.var_export($value, true));
-				}
+				$map = $action['request_data']['headers'];
+				$firephp->table(sprintf('Headers (%s)', count($map)), array_merge(array(array('Name', 'Value')), array_map($unshift_key, $map, array_keys($map))));
+			} else {
+				$firephp->log('No Headers');
 			}
-			else {
-				$firephp->log('-');
-			}
-			$firephp->groupEnd(); //headers
 
 			$firephp->groupEnd(); //req data
-			
+
 			$firephp->groupEnd(); //action
 		} // actions
-		
-		$firephp->group('Log');
-		foreach($template['log'] as $logLine) {
-			$firephp->log($logLine['microtime'] . ': ' .$logLine['message']);
+		$firephp->groupEnd(); //actions
+
+		if (count($template['log'])) {
+			$log = array_map('array_slice', array_map('array_values', $template['log']), array(1));
+			$firephp->table(sprintf('Debug Log (%s)', count($template['log'])), array_merge(array(array('Microtime', 'Message')), $log));
 		}
-		$firephp->groupEnd(); // log
-		
 	}
+
 }
 ?>
