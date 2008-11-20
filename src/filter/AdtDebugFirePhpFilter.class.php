@@ -26,11 +26,11 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter implements AgaviIActionFilter
 
 		$unshift_key = create_function('$value, $key', 'return array($key, $value);');
 
-		$firephp->group('Matched Routes');
+		$table = array(array('Name', 'Regexp', 'Matches'));
 		foreach($template['routes'] as $routeName => $routeInfo) {
-			$firephp->log($routeName);
+			$table[] = array($routeName, $routeInfo['opt']['reverseStr'], $routeInfo['matches']);
 		}
-		$firephp->groupEnd();
+		$firephp->table('Matched Routes', $table);
 
 		$firephp->group('Request Data');
 		$map = $template['request_data']['request_parameters'];
