@@ -36,7 +36,7 @@ for(; $iterator->valid(); $iterator->next()) {
 }
 
 # Create our ADT dir in modpub :)
-mkdir($demoModpubPath.'/AgaviDebugToolbar');
+mkdir($demoModpubPath.'/Adt');
 
 
 # Copy and paste all needed files from dev to demo
@@ -50,9 +50,9 @@ for(; $iterator->valid(); $iterator->next()) {
   }
 
   if ( $rdi->isDir() ) {
-    mkdir($demoModpubPath.'/AgaviDebugToolbar/'.$rdi->getSubPathname());
+    mkdir($demoModpubPath.'/Adt/'.$rdi->getSubPathname());
   } else {
-    copy( $rdi->getPathname(), $demoModpubPath.'/AgaviDebugToolbar/'.$rdi->getSubPathname() );
+    copy( $rdi->getPathname(), $demoModpubPath.'/Adt/'.$rdi->getSubPathname() );
   }
 }
 ?>
