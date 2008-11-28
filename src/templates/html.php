@@ -143,5 +143,13 @@
 				<p>No log lines</p>
 			<?php endif;?>
 		</div>
+		
+		<?php if($template['datasources']) foreach($template['datasources'] as $datasource): ?>
+			<h2><?php echo htmlspecialchars($datasource->getName()); ?></h2>
+			<div>
+				<?php var_dump($datasource->getData()); ?>
+			</div>
+		<?php endforeach; ?>
+		
 	</div><!-- sections / tabs -->
 </div>

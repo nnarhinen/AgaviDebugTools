@@ -13,6 +13,8 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 	protected $log = array();
 	
 	protected $options = array();
+
+	protected $datasources = array();
 	
 	public function initialize(AgaviContext $context, array $parameters = array())
 	{
@@ -33,6 +35,11 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 			),
 			$this->getParameters()
 		);
+		
+		$this->log['datasources'] = array();
+		foreach($this->getParameter('datasources', array()) as $ds) {
+			$this->log['datasources'][] = new $ds;
+		}
 	}
 
 	protected function updateOptions()
@@ -48,8 +55,18 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 
 	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
 	{
+		//trigger datasource event listeners
+		foreach($this->log['datasources'] as $ds) {
+			$ds->beforeExecuteOnce($container);
+		}
+
 		//procede to execute	
 		$this->execute($filterChain, $container);
+
+		//trigger datasource event listeners
+		foreach($this->log['datasources'] as $ds) {
+			$ds->afterExecuteOnce($container);
+		}
 
 		//log global (i.e. not per action) stuff
 		$this->log['routes'] = $this->getMatchedRoutes();
@@ -62,15 +79,25 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		$this->log['database'] = $this->getDatabase();
 		$this->log['tm'] = $this->getContext()->getTranslationManager();
 		$this->log['environments'] = $this->getAvailableEnvironments();
-		
+
 		$this->render($container);
 	}
 
 	public function execute(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
 	{
+		//trigger datasource event listeners
+		foreach($this->log['datasources'] as $ds) {
+			$ds->beforeExecute($container);
+		}
+
 		//procede with execution
 		$filterChain->execute($container);
 		
+		//trigger datasource event listeners
+		foreach($this->log['datasources'] as $ds) {
+			$ds->afterExecute($container);
+		}
+
 		$this->updateOptions();
 
 		//now the action has been executed and we'll log what can be logged

@@ -36,6 +36,9 @@
 			<parameter>js/SimpleTabs.js</parameter>
 			<parameter>js/AgaviDebugToolbar.js</parameter>
 		</parameter>
+		<parameter name="datasources">
+			<parameter>SampleDataSource</parameter>
+		</parameter>
 	</filter>
 	
 	<!-- Requires FirePHP -->
