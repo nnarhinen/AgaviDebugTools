@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 
 
+
 // +---------------------------------------------------------------------------+
 // | Should we run the system in debug mode? When this is on, there may be     |
 // | various side-effects. But for the time being it only deletes the cache    |
@@ -32,7 +33,7 @@ error_reporting(E_ALL);
 // | Agavi can't determine this automatically, so you always have to supply it.|
 // +---------------------------------------------------------------------------+
 AgaviConfig::set('core.app_dir', dirname(__FILE__));
-
+set_include_path(Agaviconfig::get('core.app_dir').'/../libs');
 // +---------------------------------------------------------------------------+
 // | An absolute filesystem path to the directory where cache files will be    |
 // | stored.                                                                   |

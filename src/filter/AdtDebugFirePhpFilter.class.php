@@ -112,6 +112,25 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter implements AgaviIActionFilter
 			$log = array_map('array_slice', array_map('array_values', $template['log']), array(1));
 			$firephp->table(sprintf('Debug Log (%s)', count($template['log'])), array_merge(array(array('Microtime', 'Message')), $log));
 		}
+
+		if (count($template['datasources'])) {
+			foreach($template['datasources'] as $datasource) { /* @var $datasource AdtDebugFilterDataSource */
+				switch ($datasource->getDataType()) {
+					case AdtDebugFilterDataSource::TYPE_KEYVALUE:
+					break;
+					case AdtDebugFilterDataSource::TYPE_LINEAR:
+					break;
+					case AdtDebugFilterDataSource::TYPE_TABULAR:
+						$data = $datasource->getData();
+						$table = array($data['headers']);
+						foreach($data['rows'] as $row) 
+							$table[] = $row;
+						$firephp->table($datasource->getName(), $table);
+					break;
+				}
+			}
+			
+		}
 	}
 
 }

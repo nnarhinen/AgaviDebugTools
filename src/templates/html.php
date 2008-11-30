@@ -147,7 +147,31 @@
 		<?php if($template['datasources']) foreach($template['datasources'] as $datasource): ?>
 			<h2><?php echo htmlspecialchars($datasource->getName()); ?></h2>
 			<div>
-				<?php var_dump($datasource->getData()); ?>
+				<?php if ($datasource->getDataType() == AdtDebugFilterDataSource::TYPE_KEYVALUE): ?>
+					<?php foreach($datasource->getData() as $key => $value):
+						echo htmlspecialchars($key); ?>: <?php echo htmlspecialchars($value); ?><br/>
+					<?php endforeach;
+				elseif ($datasource->getDataType() == AdtDebugFilterDataSource::TYPE_LINEAR):
+					foreach($datasource->getData() as $line):
+						echo htmlspecialchars($line); ?><br/>
+					<?php endforeach;
+				elseif ($datasource->getDataType() == AdtDebugFilterDataSource::TYPE_TABULAR):
+					$table = $datasource->getData(); ?>
+					<table>
+						<tr>
+						<?php foreach($table['headers'] as $value): ?>
+							<th><?php echo htmlspecialchars($value); ?></th>
+						<?php endforeach;?>
+						</tr>
+						<?php foreach($table['rows'] as $row): ?>
+						<tr>
+							<?php foreach($row as $value): ?>
+								<td><?php echo htmlspecialchars($value); ?></td>
+							<?php endforeach;?>
+						</tr>
+						<?php endforeach;?>
+					</table>
+				<?php endif; ?>
 			</div>
 		<?php endforeach; ?>
 		

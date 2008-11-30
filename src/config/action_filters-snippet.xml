@@ -42,6 +42,10 @@
 	</filter>
 	
 	<!-- Requires FirePHP -->
-	<!-- filter name="AdtDebugFirePhpFilter" class="AdtDebugFirePhpFilter" /-->
+	<filter name="AdtDebugFirePhpFilter" class="AdtDebugFirePhpFilter" >
+		<parameter name="datasources">
+			<parameter>SampleDataSource</parameter>
+		</parameter>
+	</filter>
 
 </filters>
