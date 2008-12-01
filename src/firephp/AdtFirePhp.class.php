@@ -1,9 +1,5 @@
 <?php
 
-if (!class_exists('FirePHP')) {
-	require('FirePHPCore/FirePHP.class.php');
-}
-
 /**
  *
  * AdtFirePhp extends FirePHP and overrides user-agent header
