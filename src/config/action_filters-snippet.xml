@@ -4,6 +4,8 @@
 	Copy and paste this into your app/config/action_filters.xml
 	or use XInclude (like the demo app)
 -->
+
+	<!-- HTML output -->
 	<filter name="AdtDebugToolbarFilter" class="AdtDebugToolbarFilter">
 		<!-- AdtDebugFilter -->
 		<!-- not implemented yet -->
@@ -41,10 +43,14 @@
 		</parameter>
 	</filter>
 	
-	<!-- Requires FirePHP -->
+	<!-- FirePHP output -->
 	<filter name="AdtDebugFirePhpFilter" class="AdtDebugFirePhpFilter" >
 		<parameter name="datasources">
-			<parameter>SampleDataSource</parameter>
+			<parameter>
+				<parameter name="class">AdtPropelDataSource</parameter>
+				<parameter name="parameters">
+				</parameter>
+			</parameter>
 		</parameter>
 	</filter>
 

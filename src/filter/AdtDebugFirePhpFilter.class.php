@@ -123,13 +123,13 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter implements AgaviIActionFilter
 					case AdtDebugFilterDataSource::TYPE_TABULAR:
 						$data = $datasource->getData();
 						$table = array($data['headers']);
-						foreach($data['rows'] as $row) 
+						foreach($data['rows'] as $row)
 							$table[] = $row;
 						$firephp->table($datasource->getName(), $table);
 					break;
 				}
 			}
-			
+
 		}
 	}
 

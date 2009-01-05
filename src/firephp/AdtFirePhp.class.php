@@ -4,12 +4,12 @@
  *
  * AdtFirePhp extends FirePHP and overrides user-agent header
  * fetching.
- * 
+ *
  * @author     Michael Stolovitzsky
  */
 class AdtFirePhp extends FirePHP
 {
-	protected $context; 
+	protected $context;
 
 	public function setContext(AgaviContext $context)
 	{
@@ -28,24 +28,24 @@ class AdtFirePhp extends FirePHP
 	 * @param boolean $AutoCreate
 	 * @return FirePHP
 	 */
-	public static function getInstance($AutoCreate=false) 
+	public static function getInstance($AutoCreate=false)
 	{
 		if($AutoCreate===true && !self::$instance) {
 			self::init();
 		}
 		return self::$instance;
 	}
-	 
+
 	/**
 	 * Creates FirePHP object and stores it for singleton access
 	 *
 	 * @return FirePHP
 	 */
-	public static function init() 
+	public static function init()
 	{
 		return self::$instance = new self();
 	}
-	
+
 
 }
 ?>

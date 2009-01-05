@@ -11,15 +11,15 @@
 abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 {
 	protected $log = array();
-	
+
 	protected $options = array();
 
 	protected $datasources = array();
-	
+
 	public function initialize(AgaviContext $context, array $parameters = array())
 	{
 		parent::initialize($context, $parameters);
-		
+
 		$this->options = array_merge(
 			//default options
 			array(
@@ -35,10 +35,13 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 			),
 			$this->getParameters()
 		);
-		
+
 		$this->log['datasources'] = array();
-		foreach($this->getParameter('datasources', array()) as $ds) {
-			$this->log['datasources'][] = new $ds;
+		foreach($this->getParameter('datasources', array()) as $datasource) {
+			$ds = new $datasource['class'];
+
+			$ds->initialize($context, (is_array($datasource['parameters']) ? $datasource['parameters'] : array()));
+			$this->log['datasources'][] = $ds;
 		}
 	}
 
@@ -60,7 +63,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 			$ds->beforeExecuteOnce($container);
 		}
 
-		//procede to execute	
+		//procede to execute
 		$this->execute($filterChain, $container);
 
 		//trigger datasource event listeners
@@ -73,7 +76,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		$this->log['request_data'] = array(
 			'request_parameters' => $this->getContext()->getRequest()->getRequestData()->getParameters(),
 			'cookies' => $this->getContext()->getRequest()->getRequestData()->getCookies(),
-			'headers' => $this->getContext()->getRequest()->getRequestData()->getHeaders() 
+			'headers' => $this->getContext()->getRequest()->getRequestData()->getHeaders()
 		);
 		$this->log['log'] = $this->getLogLines();
 		$this->log['database'] = $this->getDatabase();
@@ -92,7 +95,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 
 		//procede with execution
 		$filterChain->execute($container);
-		
+
 		//trigger datasource event listeners
 		foreach($this->log['datasources'] as $ds) {
 			$ds->afterExecute($container);
@@ -105,7 +108,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 			$this->log($container);
 		}
 	}
-	
+
 	abstract protected function render(AgaviExecutionContainer $container);
 
 	protected function log(AgaviExecutionContainer $container)
@@ -130,7 +133,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 	 * @return     array
 	 * @since      0.1
 	 */
-	private function getMatchedRoutes() 
+	private function getMatchedRoutes()
 	{
 		$result = array();
 		$matchedRoutes = $this->getContext()->getRequest()->getAttribute('matched_routes', 'org.agavi.routing');
@@ -153,7 +156,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		if ( !AgaviConfig::get('core.use_database') ) {
 			return $result;
 		}
-		
+
 		//
 		// THIS IS DEFINITELY NOT GOOD ENOUGH
 		// we'll probably just have to parse databases.xml or something
@@ -188,12 +191,12 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 	{
 		return $this->context->getRequest()->getAttribute('log', 'adt.debugtoolbar', array());
 	}
-	
+
 	private function getValidationInfo(AgaviExecutionContainer $container)
 	{
 		$vm = $container->getValidationManager();
 		$result = array();
-		
+
 		$result['has_errors'] = $vm->hasErrors();
 		$result['severities'] = array(
 			200 => 'SILENT',
@@ -202,18 +205,18 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 			500 => 'CRITICAL',
 		);
 		$result['incidents'] = $vm->getIncidents();
-		
+
 		return $result;
 	}
-	
+
 	/**
 	 * Get list of available environments
-	 * 
+	 *
 	 * @author Daniel Ancuta
-	 * @return 
+	 * @return
 	 * @since 0.1
 	 */
-	private function getAvailableEnvironments() 
+	private function getAvailableEnvironments()
 	{
 		$result = array();
 
@@ -222,22 +225,22 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		$doc->load(AgaviConfig::get('core.config_dir').'/settings.xml');
 
 		//TODO: XPath is broken, fix it
-		
+
 		$xpath = new DOMXPath($doc);
 		$xpath->registerNamespace('agavi', 'http://agavi.org/agavi/1.0/config');
 		$query = "//agavi:configurations/agavi:configuration/..";
-		
+
 		$nodes = $xpath->query($query);
 
 		foreach( $nodes as $node ) {
-			$env = $node->hasAttribute('environment') ? $node->getAttribute('environment') : '(default)'; 
+			$env = $node->hasAttribute('environment') ? $node->getAttribute('environment') : '(default)';
 			$result[$env] = array();
 
 			// System actions
 			foreach( $node->getElementsByTagName('system_actions') as $oneSystemAction ) {
 				foreach( $oneSystemAction->getElementsByTagName('system_action') as $systemAction ) {
-					$result[$env]['system_actions'][$systemAction->getAttribute('name')] = 
-					array('module' => $systemAction->getElementsByTagName('module')->item(0)->nodeValue, 
+					$result[$env]['system_actions'][$systemAction->getAttribute('name')] =
+					array('module' => $systemAction->getElementsByTagName('module')->item(0)->nodeValue,
 								'action' => $systemAction->getElementsByTagName('action')->item(0)->nodeValue);
 
 				}
