@@ -40,7 +40,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter
 		foreach($this->getParameter('datasources', array()) as $datasource) {
 			$ds = new $datasource['class'];
 
-			$ds->initialize($context, (is_array($datasource['parameters']) ? $datasource['parameters'] : array()));
+			$ds->initialize($context, (isset($datasource['parameters']) && is_array($datasource['parameters']) ? $datasource['parameters'] : array()));
 			$this->log['datasources'][] = $ds;
 		}
 	}
