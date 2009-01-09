@@ -34,7 +34,12 @@ class AdtPropelDataSource extends AdtDebugFilterDataSource
 	 */
 	public function getName()
 	{
-		return 'Propel Query Log';
+		$queries = 0;
+		$pdo = $this->context->getDatabaseConnection($this->getParameter('database_name'));
+		if ($pdo instanceof DebugPDO) {
+			$queries = $pdo->getQueryCount();
+		}
+		return sprintf('Propel Query Log (%d queries)', $queries);
 	}
 
 	public function getDataType()

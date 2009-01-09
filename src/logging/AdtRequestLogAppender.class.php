@@ -16,15 +16,13 @@ class AdtRequestLogAppender extends AgaviLoggerAppender
 		if(($layout = $this->getLayout()) === null) {
 			throw new AgaviLoggingException('No Layout set');
 		}
-		
 		$this->context->getRequest()->appendAttribute(
 			'log',
 			array(
-				'timestamp' => new DateTime(), 
 				'microtime' => microtime(true), 
 				'message' => $this->getLayout()->format($message)
 			),
-			'adt.debugtoolbar'
+			AdtDebugFilter::NS_DATA
 		);
 	}
 	

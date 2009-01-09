@@ -13,20 +13,10 @@
 			<?php include('html-globalrd.php'); ?>
 		</div>
 
+		<? if (isset($template['actions'])): ?>
 		<h2>Actions</h2>
 		<div id="adt-section-actions" >
 			<?php include('html-actions.php'); ?>
-		</div>
-
-		<h2>FPF</h2>
-		<div>
-			FormPopulationFilter TODO
-		</div>
-
-		<?php if ( AgaviConfig::get('core.use_database') ): ?>
-		<h2>Databases</h2>
-		<div>
-			Class name: <?php echo $template['database']['class_name']; ?>
 		</div>
 		<?php endif; ?>
 
