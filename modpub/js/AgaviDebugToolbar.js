@@ -12,9 +12,11 @@ window.addEvent("domready", function(){
 		selector: 'h3'
 	});
 	
-	var atabs = new SimpleTabs('adt-section-actions', {
-		selector: 'h3'
-	});
+	if ($('adt-section-actions')) {
+		var atabs = new SimpleTabs('adt-section-actions', {
+			selector: 'h3'
+		});
+	}
 	
 	var rdtabs = new SimpleTabs('adt-section-globalrd', {
 		selector: 'h3'
