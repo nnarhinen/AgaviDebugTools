@@ -26,8 +26,6 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter,
 	{
 		parent::initialize($context, $parameters);
 		$this->rq = $context->getRequest();
-		$this->context->getLoggerManager()->log('Look Ma! Me debugging!');
-		
 
 		//merge default options, earlier set options and parameters from the xml config.
 		$defaultOptions = array(
