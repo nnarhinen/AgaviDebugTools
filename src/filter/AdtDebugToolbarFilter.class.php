@@ -19,6 +19,7 @@ class AdtDebugToolbarFilter extends AdtDebugFilter implements AgaviIActionFilter
 		}
 		
 		$template = $this->rq->getAttributeNamespace(AdtDebugFilter::NS_DATA);
+		$template['datasources'] = $this->rq->getAttribute('datasources', AdtDebugFilter::NS, array());
 
 		// TODO: handle relative and absolute paths
 		ob_start();
