@@ -12,12 +12,12 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter,
 {
 	const NS = 'adt.debugfilter';
 	const NS_DATA = 'adt.debugfilter.data';
-	
+
 	/**
 	 * @var        AgaviRequest
 	 */
 	protected $rq;
-	
+
 	protected $options = array();
 
 	protected $datasources = array();
@@ -43,7 +43,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter,
 			$this->rq->getAttribute('options', self::NS, array()),
 			$this->getParameters()
 		);
-		$this->rq->setAttribute('options', $options, self::NS); 
+		$this->rq->setAttribute('options', $options, self::NS);
 
 		//external data sources
 		foreach($this->getParameter('datasources', array()) as $datasource) {
@@ -53,7 +53,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter,
 			$this->rq->appendAttribute('datasources', $ds, self::NS);
 		}
 	}
-	
+
 	/**
 	 * Checks if it is ok to inject debug output into the response
 	 *
@@ -78,7 +78,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter,
 		$filterChain->execute($container);
 
 		//trigger datasource event listeners
-		foreach($this->rq->getAttribute('datasources', self::NS) as $ds) {
+		foreach($this->rq->getAttribute('datasources', self::NS, array()) as $ds) {
 			$ds->afterExecuteOnce($container);
 		}
 
@@ -89,7 +89,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter,
 			'cookies' => $this->getContext()->getRequest()->getRequestData()->getCookies(),
 			'headers' => $this->getContext()->getRequest()->getRequestData()->getHeaders()
 			), self::NS_DATA);
-			
+
 		$this->rq->setAttribute('tm', $this->getContext()->getTranslationManager(), self::NS_DATA);
 //		$this->log['environments'] = $this->getAvailableEnvironments();
 
@@ -208,6 +208,7 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter,
 
 		$result['has_errors'] = $vm->hasErrors();
 		$result['severities'] = array(
+			100 => 'INFO',
 			200 => 'SILENT',
 			300 => 'NOTICE',
 			400 => 'ERROR',
