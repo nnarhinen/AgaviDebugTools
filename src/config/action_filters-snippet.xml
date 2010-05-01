@@ -1,57 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<filters>
-<!-- 
-	Copy and paste this into your app/config/action_filters.xml
-	or use XInclude (like the demo app)
--->
+<ae:configurations xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0" xmlns="http://agavi.org/agavi/config/parts/filters/1.0">
+	<ae:configuration>
+		<filters>
+		<!-- 
+			Copy and paste this into your app/config/action_filters.xml
+			or use XInclude (like the demo app)
+		-->
 
-	<!-- HTML output -->
-	<filter name="AdtDebugToolbarFilter" class="AdtDebugToolbarFilter">
-		<!-- AdtDebugFilter -->
-		<!-- not implemented yet -->
-		<!-- parameter name="sections">
-			<parameter>routing</parameter>
-			<parameter>globalrd</parameter>
-			<parameter>actions</parameter>
-			<parameter>fpf</parameter>
-			<parameter>translation</parameter>
-			<parameter>environment</parameter>
-			<parameter>log</parameter>
-		</parameter-->
+			<!-- HTML output -->
+			<filter name="AdtDebugToolbarFilter" class="AdtDebugToolbarFilter">
+				<!-- AdtDebugFilter -->
+				<!-- not implemented yet -->
+				<!-- parameter name="sections">
+					<ae:parameter>routing</ae:parameter>
+					<ae:parameter>globalrd</ae:parameter>
+					<ae:parameter>actions</ae:parameter>
+					<ae:parameter>fpf</ae:parameter>
+					<ae:parameter>translation</ae:parameter>
+					<ae:parameter>environment</ae:parameter>
+					<ae:parameter>log</ae:parameter>
+				</ae:parameter-->
 
 
-		<!-- AdtDebugToolbarFilter -->
+				<!-- AdtDebugToolbarFilter -->
 	
-		<parameter name="output_types">
-			<parameter>html</parameter>
-		</parameter>
-		<parameter name="modpub">modpub/Adt</parameter>
+				<ae:parameter name="output_types">
+					<ae:parameter>html</ae:parameter>
+				</ae:parameter>
+				<ae:parameter name="modpub">modpub</ae:parameter>
 		
-		<parameter name="template">templates/html.php</parameter>
+				<ae:parameter name="template">templates/html.php</ae:parameter>
 
-		<!-- for the HTML template, relative to modpub -->
-		<parameter name="css">
-			<parameter>css/adt.css</parameter>
-		</parameter>
-		<parameter name="js">
-			<parameter>js/mootools-1.2.js</parameter>
-			<parameter>js/SimpleTabs.js</parameter>
-			<parameter>js/AgaviDebugToolbar.js</parameter>
-		</parameter>
-		<parameter name="datasources">
-			<parameter>SampleDataSource</parameter>
-		</parameter>
-	</filter>
+				<!-- for the HTML template, relative to modpub -->
+				<ae:parameter name="css">
+					<ae:parameter>css/adt.css</ae:parameter>
+				</ae:parameter>
+				<ae:parameter name="js">
+					<ae:parameter>js/mootools-1.2.js</ae:parameter>
+					<ae:parameter>js/SimpleTabs.js</ae:parameter>
+					<ae:parameter>js/AgaviDebugToolbar.js</ae:parameter>
+				</ae:parameter>
+				<ae:parameter name="datasources">
+					<ae:parameter>
+						<ae:parameter name="class">SampleDataSource</ae:parameter>
+					</ae:parameter>
+				</ae:parameter>
+			</filter>
 	
-	<!-- FirePHP output -->
-	<filter name="AdtDebugFirePhpFilter" class="AdtDebugFirePhpFilter" >
-		<parameter name="datasources">
-			<parameter>
-				<parameter name="class">AdtPropelDataSource</parameter>
-				<parameter name="parameters">
-				</parameter>
-			</parameter>
-		</parameter>
-	</filter>
-
-</filters>
+			<!-- FirePHP output -->
+			<filter name="AdtDebugFirePhpFilter" class="AdtDebugFirePhpFilter" >
+				<ae:parameter name="datasources">
+					<ae:parameter>
+						<ae:parameter name="class">SampleDataSource</ae:parameter>
+						<!--Propel DataSource for Query Logging-->
+						<!--ae:parameter name="class">AdtPropelDataSource</ae:parameter-->
+						<ae:parameter name="parameters">
+						</ae:parameter>
+					</ae:parameter>
+				</ae:parameter>
+			</filter>
+		</filters>
+	</ae:configuration>
+</ae:configurations>
