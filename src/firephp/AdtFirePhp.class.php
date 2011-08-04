@@ -9,6 +9,7 @@
  */
 class AdtFirePhp extends FirePHP
 {
+
 	protected $context;
 
 	public function setContext(AgaviContext $context)
@@ -30,7 +31,10 @@ class AdtFirePhp extends FirePHP
 	 */
 	public static function getInstance($AutoCreate=false)
 	{
-		if($AutoCreate===true && !self::$instance) {
+		// Workaround, FirePHP 1.0 instantiates the parent class so when ADT
+		// gets around to instantiate "itself", self::$instance already points to
+		// a FirePHP_Insight object. If so, we nuke the shit out of it.
+		if (($AutoCreate === true && !self::$instance) || get_class(self::$instance) == 'FirePHP_Insight') {
 			self::init();
 		}
 		return self::$instance;
@@ -43,9 +47,9 @@ class AdtFirePhp extends FirePHP
 	 */
 	public static function init()
 	{
-		return self::$instance = new self();
+		return self::setInstance(new self());
 	}
 
-
 }
+
 ?>

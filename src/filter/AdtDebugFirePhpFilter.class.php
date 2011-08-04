@@ -25,27 +25,35 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter
 	protected function firePhpTable(array $headers, array $data, $dataAsKeyValuePairs=false)
 	{
 		$result = array($headers);
-		foreach($data as $key => $value) {
+		foreach ($data as $key => $value) {
 			if ($dataAsKeyValuePairs) {
 				$result[] = array($key, $value);
-			}
-			else {
+			} else {
 				$result[] = array_values($value);
 			}
 		}
 
 		return $result;
 	}
-	
+
 	public function render(AgaviExecutionContainer $container)
 	{
+
 		$firephp = AdtFirePhp::getInstance(true);
 		$firephp->setContext($this->context);
+
+		if (class_exists('FirePHP_Insight', false)) {
+			// We're running a newer FirePHP, need to set HTTP_HOST
+			// for Insigh to work
+			$_SERVER['HTTP_HOST'] = $this->rq->getUrlHost();
+		}
+
+
 		$firephp->setOptions(array(
-			'includeLineNumbers' => false,
-			'maxObjectDepth' => 1
+				'includeLineNumbers' => false,
+				'maxObjectDepth' => 1
 		));
-		
+
 		if (!$this->isAllowedOutputType($container)) {
 			return;
 		}
@@ -53,56 +61,54 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter
 		$template = $this->rq->getAttributeNamespace(AdtDebugFilter::NS_DATA);
 
 		$table = array(array('Name', 'Regexp', 'Matches'));
-		foreach($template['routes'] as $routeName => $routeInfo) {
+		foreach ($template['routes'] as $routeName => $routeInfo) {
 			$table[] = array($routeName, $routeInfo['opt']['reverseStr'], $routeInfo['matches']);
 		}
 		$firephp->table('Matched Routes', $table);
 
 		$firephp->group('Request Data');
-		
-		foreach($template['request_data'] as $title => $data) {
+
+		foreach ($template['request_data'] as $title => $data) {
 			$title = ucwords(str_replace('_', ' ', $title));
 			$firephp->table(
-				sprintf($title.' (%s)', count($data)),
-				$this->firePhpTable(array('Name', 'Value'), $data, true)
+							sprintf($title . ' (%s)', count($data)), $this->firePhpTable(array('Name', 'Value'), $data, true)
 			);
 		}
-		
+
 		$firephp->groupEnd(); //req data
 
 		if (isset($template['actions'])) {
 			$firephp->group('Actions');
-	
-			foreach($template['actions'] as $action) {
-				$firephp->group($action['module'] .'.'.$action['name']);
+
+			foreach ($template['actions'] as $action) {
+				$firephp->group($action['module'] . '.' . $action['name']);
 				if ($action['validation']['has_errors']) {
 					$firephp->error('Has Validation Errors');
 				} else {
 					$firephp->log('No Validation Errors');
 				}
-	
+
 				$map = $action['validation']['incidents'];
 				if (count($map)) {
 					$table = array(array('Name', 'Severity', 'Fields'));
-					foreach($action['validation']['incidents'] as $incident) { /* @var $incident AgaviValidationIncident */
+					foreach ($action['validation']['incidents'] as $incident) { /* @var $incident AgaviValidationIncident */
 						$table[] = array(
-							$incident->getValidator() ? $incident->getValidator()->getName() : '(no validator)',
-							$action['validation']['severities'][$incident->getSeverity()],
-							implode(', ', $incident->getFields())
+								$incident->getValidator() ? $incident->getValidator()->getName() : '(no validator)',
+								$action['validation']['severities'][$incident->getSeverity()],
+								implode(', ', $incident->getFields())
 						);
 					}
 					$firephp->table(sprintf('Validation Incidents (%s)', count($map)), $table);
 				} else {
 					$firephp->log('No Validation Incidents');
 				}
-	
+
 				$firephp->group('Request Data (from execution container)');
-	
-				foreach($action['request_data'] as $title => $data) {
+
+				foreach ($action['request_data'] as $title => $data) {
 					$title = ucwords(str_replace('_', ' ', $title));
 					$firephp->table(
-						sprintf($title.' (%s)', count($data)),
-						$this->firePhpTable(array('Name', 'Value'), $data, true)
+									sprintf($title . ' (%s)', count($data)), $this->firePhpTable(array('Name', 'Value'), $data, true)
 					);
 				}
 				$firephp->groupEnd(); //req data
@@ -113,28 +119,27 @@ class AdtDebugFirePhpFilter extends AdtDebugFilter
 
 		if (!empty($template['log'])) {
 			$firephp->table(
-				sprintf('Debug Log (%s)', count($template['log'])), 
-				$this->firePhpTable(array('Microtime', 'Message'), $template['log'])
+							sprintf('Debug Log (%s)', count($template['log'])), $this->firePhpTable(array('Microtime', 'Message'), $template['log'])
 			);
 		}
 
-		foreach($this->rq->getAttribute('datasources', AdtDebugFilter::NS, array()) as $datasource) { /* @var $datasource AdtDebugFilterDataSource */
+		foreach ($this->rq->getAttribute('datasources', AdtDebugFilter::NS, array()) as $datasource) { /* @var $datasource AdtDebugFilterDataSource */
 			switch ($datasource->getDataType()) {
 				case AdtDebugFilterDataSource::TYPE_KEYVALUE:
-				break;
+					break;
 				case AdtDebugFilterDataSource::TYPE_LINEAR:
-				break;
+					break;
 				case AdtDebugFilterDataSource::TYPE_TABULAR:
 					$data = $datasource->getData();
 					$table = array($data['headers']);
-					foreach($data['rows'] as $row)
+					foreach ($data['rows'] as $row)
 						$table[] = $row;
 					$firephp->table($datasource->getName(), $table);
-				break;
+					break;
 			}
 		}
-
 	}
 
 }
+
 ?>
