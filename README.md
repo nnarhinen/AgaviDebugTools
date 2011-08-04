@@ -139,3 +139,42 @@ action_filters.xml
 
 This kind of dual-registering is necessary because most of the logging needs to be done by an action filter but rendering to output is best left to a global filter. If you only want to log, say, routing data or Propel queries, you can register the filter as global only. Then now action data is logged.
 
+## Using the Logger
+
+ADT ships with a logger appender that makes it possible pass arbitrary log lines to the debug filter.
+
+To configure AdtRequestLogAppender add this to your logging.xml.
+
+```xml
+<loggers default="debug">
+	<!-- logs only DEBUG messages -->
+	<logger name="debug" class="AgaviLogger" level="AgaviLogger::DEBUG">
+		<appenders>
+		  <appender>AdtRequestLogAppender</appender>
+		</appenders>
+	</logger>
+</loggers>
+ 
+<appenders>
+	<appender name="AdtRequestLogAppender" class="AdtRequestLogAppender" layout="PassthruLayout" />
+</appenders>
+ 
+<layouts>
+	<layout name="PassthruLayout" class="AgaviPassthruLoggerLayout" />
+</layouts>
+
+```
+
+... make sure logging is enabled in settings.xml ... 
+
+```xml
+<setting name="use_logging">true</setting>
+```
+
+... and start using it.
+
+```php
+<?php
+	$this->context->getLoggerManager()->log('Look Ma! Me debugging!', AgaviLogger::DEBUG);
+?>
+```
