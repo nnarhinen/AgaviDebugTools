@@ -7,6 +7,7 @@ Agavi Debug Tools is a project that aims to provide debugging tools for Agavi de
  * Copy src/ into myproject/libs/adt/
  * Copy modpub/ into myproject/pub/modpub/adt/ (if you want to use the html output)
  * Add ADT classes to autoload.xml (adjust paths according to your project layout)
+
 ```xml
 <ae:configuration environment="development.*">
  
@@ -40,9 +41,13 @@ Agavi Debug Tools is a project that aims to provide debugging tools for Agavi de
 	<!-- optional data source: Action timer-->
 	<autoload name="AdtActionTimerDataSource">%core.app_dir%/../libs/adt/extras/AdtActionTimerDataSource.class.php</autoload>
 </ae:configuration>
+
 ```
+
  * Register the filter in your global_filters.xml and action_filters.xml
+
 global_filters.xml
+
 ```xml
 <ae:configuration environment="development.*">
  
@@ -113,7 +118,9 @@ global_filters.xml
  
 </ae:configuration>
 ```
+
 action_filters.xml
+
 ```xml
 <ae:configuration environment="development.*">
  
@@ -127,6 +134,8 @@ action_filters.xml
 	<filter name="AdtDebugToolbarFilter" class="AdtDebugToolbarFilter" enabled="false" />
  
 </ae:configuration>
+
 ```
+
 This kind of dual-registering is necessary because most of the logging needs to be done by an action filter but rendering to output is best left to a global filter. If you only want to log, say, routing data or Propel queries, you can register the filter as global only. Then now action data is logged.
 
