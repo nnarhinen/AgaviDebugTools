@@ -139,6 +139,23 @@ action_filters.xml
 
 This kind of dual-registering is necessary because most of the logging needs to be done by an action filter but rendering to output is best left to a global filter. If you only want to log, say, routing data or Propel queries, you can register the filter as global only. Then now action data is logged.
 
+## DeveloperCompanion support
+
+To get ADT to work with DeveloperCompanion, copy+paste the following lines of code into your index.php
+
+```php
+define('INSIGHT_IPS', '*');
+define('INSIGHT_AUTHKEYS', '');
+define('INSIGHT_PATHS', AgaviConfig::get('core.app_dir'));
+define('INSIGHT_SERVER_PATH', '/index.php');
+
+require_once('/Init.php');
+```
+
+DeveloperCompanion gives you the auth key when you launch it and create a new workspace.
+
+Remember to remove the old FirePHP from your autoload.xml -file.
+
 ## Using the Logger
 
 ADT ships with a logger appender that makes it possible pass arbitrary log lines to the debug filter.
