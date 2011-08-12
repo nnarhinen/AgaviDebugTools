@@ -1,16 +1,60 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/2000/REC-xhtml1-20000126/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en" />
+		<title>ADT Agavi Debug Tools</title>
+		<meta name="robots" content="all" />
+		<meta name="keywords" content="agavi, debug, toolbar, firephp" />
+		<link rel="stylesheet" type="text/css" href="default.css" media="screen" />
+	</head>
+	<body>
+		<div id="main-container">
+			<div id="content">
+			
+				<h1>ADT Agavi Debug Tools</h1>
+				<h2>About</h2>
+				<p>Agavi Debug Tools is a project that aims to provide debugging tools for <a href="http://agavi.org/">Agavi</a> developers.</p>
+				<h2>History</h2>
+				<p> 
+				The project got its start when Daniel Ancuta started to write a Debug Toolbar action filter for Agavi.
+				</p>
+				<p>The toolbar is still the main part of the project but the architecture evolved a bit when <a href="http://blog.veikko.fi">Veikko Mäkinen</a> took over, allowing the keeping of debug data gathering and rendering separate. 
+				This has made it possible to add other output types, namely <a href="http://www.firephp.org/">FirePHP</a>.</p>
 
-	<title>index</title>
-	
-</head>
-
-<body>
-
-
-</body>
+				<h2>News</h2>
+				<ul>
+					<li>2011-08-12: This page moved to github pages</li>
+					<li>2011-08-03: Support for FirePHP 1.0 (DeveloperCompanion) added</li>
+					<li>2011-08-01: Development moved to github</li>
+					<li>2009-02-15: Sample configs (below) update to work with Agavi 1.0.0 Beta 9. With older versions you might need to remove ae-namespace.</li>
+					<li>2009-01-09: AdtDebugFilter can now be "dual-registered" as global and an action filter, or it can be used just as a global filter.</li>
+					<li>2009-01-05: Added support for <a href="http://propel.phpdb.org">Propel</a> query logging. Configure Propel to use DebugPDO and add the data source to the filter configuration (example below).</li>
+					<li>2009-01-05: FirePHP is now bundled so there's no dependencies to external libraries.</li>
+				</ul>
+				
+				<h2>Screenshots</h2>
+				<ul>
+					<li><a href="pics/adt-actions.png">Action with a failed validator and request data (after strict validation has filtered unvalidated data).</a></li>
+					<li><a href="pics/adt-routing.png">Details about all matched routes</a></li>
+					<li><a href="pics/adt-globalrd.png">Global request data (not validated)</a></li>
+					<li><a href="pics/adt-logging.png">Logging</a></li>
+					<li><a href="pics/adt-firephp.png">FirePHP output</a></li>
+					<li><a href="pics/adt-propel.png">Propel query logging in FirePHP console</a></li>
+				</ul>
+			
+				<h2>Installation</h2>
+				<p>
+					Source code is available via github: <a href="https://github.com/nnarhinen/AgaviDebugTools">https://github.com/nnarhinen/AgaviDebugTools</a>.
+				</p>
+				<p>
+					Instructions on installation etc can be found from <a href="https://github.com/nnarhinen/AgaviDebugTools#readme">README.md</a>
+				</p>
+				
+			</div>
+		</div>
+		
+		<!-- github ribbon -->
+		<a href="https://github.com/nnarhinen/AgaviDebugTools"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/ce742187c818c67d98af16f96ed21c00160c234a/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a>
+	</body>
 </html>
