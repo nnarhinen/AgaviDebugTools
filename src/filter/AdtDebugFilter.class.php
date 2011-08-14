@@ -5,6 +5,7 @@
  *
  * @author     Daniel Ancuta <daniel.ancuta@whisnet.pl>
  * @author     Veikko Mäkinen <veikko@veikko.fi>
+ * @author     Niklas Närhinen <niklas@narhinen.net>
  * @copyright  Authors
  * @version    $Id$
  */
@@ -17,6 +18,8 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter,
 	 * @var        AgaviRequest
 	 */
 	protected $rq;
+	
+	protected static $runCount = 0;
 
 	protected $options = array();
 
@@ -67,54 +70,54 @@ abstract class AdtDebugFilter extends AgaviFilter implements AgaviIActionFilter,
 		return $container->getResponse()->isContentMutable() && (!is_array($outputTypes) || in_array($currentOutputType, $outputTypes) );
 	}
 
-	public function executeOnce(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
-	{
-		//trigger datasource event listeners
-		foreach($this->rq->getAttribute('datasources', self::NS, array()) as $ds) {
-			$ds->beforeExecuteOnce($container);
-		}
-
-		//procede to in the chain
-		$filterChain->execute($container);
-
-		//trigger datasource event listeners
-		foreach($this->rq->getAttribute('datasources', self::NS, array()) as $ds) {
-			$ds->afterExecuteOnce($container);
-		}
-
-		//log global (i.e. not per action) stuff
-		$this->rq->setAttribute('routes', $this->getMatchedRoutes(), self::NS_DATA);
-		$this->rq->setAttribute('request_data', array(
-			'request_parameters' => $this->getContext()->getRequest()->getRequestData()->getParameters(),
-			'cookies' => $this->getContext()->getRequest()->getRequestData()->getCookies(),
-			'headers' => $this->getContext()->getRequest()->getRequestData()->getHeaders()
-			), self::NS_DATA);
-
-		$this->rq->setAttribute('tm', $this->getContext()->getTranslationManager(), self::NS_DATA);
-//		$this->log['environments'] = $this->getAvailableEnvironments();
-
-		$this->render($container);
-	}
-
 	public function execute(AgaviFilterChain $filterChain, AgaviExecutionContainer $container)
 	{
-		//trigger datasource event listeners
-		foreach($this->rq->getAttribute('datasources', self::NS, array()) as $ds) {
-			$ds->beforeExecute($container);
+		$isGlobal = (++self::$runCount == 1);
+		if ($isGlobal) { // We are called from a global filterchain
+			//trigger datasource event listeners
+			foreach($this->rq->getAttribute('datasources', self::NS, array()) as $ds) {
+				$ds->beforeExecuteOnce($container);
+			}
+		}
+		else { // This is a action filterchain
+			//trigger datasource event listeners
+			foreach($this->rq->getAttribute('datasources', self::NS, array()) as $ds) {
+				$ds->beforeExecute($container);
+			}
 		}
 
-		//procede with execution
-//		throw new Exception(__METHOD__);
+		// Proceed with execution
 		$filterChain->execute($container);
+		
+		if ($isGlobal) { // We are called from a global filterchain
+			//trigger datasource event listeners
+			foreach($this->rq->getAttribute('datasources', self::NS, array()) as $ds) {
+				$ds->afterExecuteOnce($container);
+			}
 
-		//trigger datasource event listeners
-		foreach($this->rq->getAttribute('datasources', self::NS, array()) as $ds) {
-			$ds->afterExecute($container);
+			//log global (i.e. not per action) stuff
+			$this->rq->setAttribute('routes', $this->getMatchedRoutes(), self::NS_DATA);
+			$this->rq->setAttribute('request_data', array(
+				'request_parameters' => $this->getContext()->getRequest()->getRequestData()->getParameters(),
+				'cookies' => $this->getContext()->getRequest()->getRequestData()->getCookies(),
+				'headers' => $this->getContext()->getRequest()->getRequestData()->getHeaders()
+				), self::NS_DATA);
+
+			$this->rq->setAttribute('tm', $this->getContext()->getTranslationManager(), self::NS_DATA);
+	//		$this->log['environments'] = $this->getAvailableEnvironments();
+
+			$this->render($container);
 		}
+		else {
+			//trigger datasource event listeners
+			foreach($this->rq->getAttribute('datasources', self::NS, array()) as $ds) {
+				$ds->afterExecute($container);
+			}
 
-		//now the action has been executed and we'll log what can be logged
-		if(true) { //FIXME: options: in_array('actions', $this->options['sections'])) {
-			$this->log($container);
+			//now the action has been executed and we'll log what can be logged
+			if(true) { //FIXME: options: in_array('actions', $this->options['sections'])) {
+				$this->log($container);
+			}
 		}
 	}
 
